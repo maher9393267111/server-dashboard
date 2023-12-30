@@ -106,9 +106,17 @@ const uploadProductImage = tryCatch((req, res, next) => {
     });
 });
 
+
+
+
+
+
+
+
+
 module.exports = {
     uploadProductImage,
     uploadCategoryImage,
     uploadSliderImage,
-    uploadSupplierImage,
+    // uploadSupplierImage,
 };

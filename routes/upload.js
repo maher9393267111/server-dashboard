@@ -1,16 +1,14 @@
-const express = require("express");
+
+const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 
-const {
-  uploadProductImage,
-  uploadCategoryImage,
-  uploadSliderImage,
-  uploadSupplierImage,
-} = require("../controllers/upload");
+const images = require('../controllers/digitaloceanUpload');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-router.post("/category/:id", uploadCategoryImage);
-router.post("/slider/:id", uploadSliderImage);
-router.post("/supplier/:id", uploadSupplierImage);
-router.post("/product/:id", uploadProductImage);
+
+router.post('/avatar', upload.single('image'), images.sendAvatar); //FIXME REGEX
+
 
 module.exports = router;

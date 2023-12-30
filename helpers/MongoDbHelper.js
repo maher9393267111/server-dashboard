@@ -3,8 +3,8 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
 // Chuỗi kết nối đến MongoDB
-const DATABASE_NAME = 'Shoes_Online';
-const CONNECTION_STRING = 'mongodb+srv://inferno332:khoapro1@cluster1.cllwm65.mongodb.net/' + DATABASE_NAME;
+const DATABASE_NAME = 'theme';
+const CONNECTION_STRING = "mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority";
 
 // INSERT: Thêm mới (một)
 function insertDocument(data, collectionName) {

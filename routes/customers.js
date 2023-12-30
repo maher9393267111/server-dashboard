@@ -12,7 +12,8 @@ const {
 const allowRoles = require("../middleware/allowRoles");
 const auth = require('../middleware/auth');
 
-router.get("/", auth, allowRoles("admin", "staff"), getAllCustomers);
+
+router.get("/",auth, allowRoles("admin", "staff"), getAllCustomers);
 router.get("/:id", auth, allowRoles("admin", "staff"), getCustomerById);
 router.get(
   "/find/:name",
@@ -20,8 +21,9 @@ router.get(
   allowRoles("admin", "staff"),
   getCustomerByName
 );
+
 router.post("/", createCustomer);
-router.put("/:id", auth, allowRoles("admin"), updateCustomer);
-router.delete("/:id", auth, allowRoles("admin"), deleteCustomer);
+router.put("/:id", auth, allowRoles("admin", "staff"), updateCustomer);
+router.delete("/:id", auth, allowRoles("admin" ,"staff"), deleteCustomer);
 
 module.exports = router;

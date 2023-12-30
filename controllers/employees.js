@@ -15,6 +15,12 @@ const getEmployeeById = tryCatch(async (req, res) => {
 const getEmployeeByName = tryCatch(async (req, res) => {
   const { name } = req.params;
   const employee = await Employee.find().byFullName(name);
+
+
+
+
+
+
   res.status(200).json(employee);
 });
 

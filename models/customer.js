@@ -3,14 +3,17 @@ const { Schema, model } = mongoose;
 
 const customerSchema = new Schema(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    firstName: { type: String, required: false },
+    lastName: { type: String, required: false },
+    email: { type: String, required: false  ,default:"pending@email" },
     phoneNumber: String,
-    address: { type: String, required: true },
+
+    address: { type: String, required: false },
     birthday: Date,
+    status :{type:String ,required :true , default:"pending"}
   },
   {
+
     query: {
       byFirstName(name) {
         return this.where({ firstName: new RegExp(name, "i") });

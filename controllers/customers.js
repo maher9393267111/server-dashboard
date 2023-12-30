@@ -15,7 +15,31 @@ const getCustomerById = tryCatch(async (req, res) => {
 const getCustomerByName = tryCatch(async (req, res) => {
   const { name } = req.params;
   const customer = await Customer.find().byFirstName(name);
+
+
+  // get employe if exist if not exist  create it with pending it
+
+
+  if(customer?.length === 0){
+
+const data ={firstName:req.params.name ,status:"pending" ,email:`${req.params.name}@gmail.com`}
+    const customernew = new Customer(data);
+
+    await customernew.save();
+  
+    res.status(200).json({message:"pending customer created" ,customernew});
+  }
+
+
+
+  else {
+  
+
   res.status(200).json(customer);
+  }
+
+
+
 });
 
 const createCustomer = tryCatch(async (req, res) => {

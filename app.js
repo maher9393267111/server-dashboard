@@ -13,7 +13,7 @@ const passport = require('passport');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const uploadRoute = require('./routes/upload');
+ const uploadRoute = require('./routes/upload');
 const loginRoute = require('./routes/login');
 const categoriesRoute = require('./routes/categories');
 const suppliersRoute = require('./routes/suppliers');
@@ -71,7 +71,7 @@ passport.use(
 
 
 //ROUTES
-app.use("/upload", uploadRoute);
+ app.use("/upload", uploadRoute);
 app.use("/auth", loginRoute);
 app.use("/categories", categoriesRoute);
 app.use("/suppliers", suppliersRoute);

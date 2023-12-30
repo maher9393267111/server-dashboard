@@ -149,6 +149,8 @@ const createProduct = tryCatch(async (req, res) => {
     res.status(200).json(product);
 });
 
+
+
 const updateProduct = tryCatch(async (req, res) => {
     const { id } = req.params;
     const data = req.body;
