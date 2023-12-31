@@ -112,10 +112,10 @@ const server = app.listen(port, () => {
 })
 const io = new Server(server, {
     cors: {
-        origin: true,
-        Credential: true,
-        // origin: baseURLFrontend.baseURLFrontend,
-        // methods: ["GET", "POST"]
+       // origin: true,
+        //Credential: true,
+         origin: "http://localhost:3000",
+         methods: ["GET", "POST"]
     }
 });
 
