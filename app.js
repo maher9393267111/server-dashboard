@@ -60,6 +60,7 @@ passport.use(
         findDocument(_id, 'employees')
             .then((result) => {
                 if (result) {
+                  //  console.log("resul passport" , result)
                     return done(null, result);
                 } else {
                     return done(null, false);
@@ -77,7 +78,7 @@ passport.use(
 
 
 //ROUTES
- app.use("/upload", uploadRoute);
+app.use("/upload", uploadRoute);
 app.use("/auth", loginRoute);
 app.use("/categories", categoriesRoute);
 app.use("/suppliers", suppliersRoute);
@@ -88,11 +89,7 @@ app.use("/orders", ordersRoute);
 app.use("/sliders", slidersRoute);
 app.use("/public", express.static("public"));
 
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//     next(createError(404));
 
-// });
 
 
 
@@ -134,6 +131,20 @@ socketOrder(io)
 
 
 
+
+
+module.exports = app;
+
+
+
+// catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//     next(createError(404));
+
+// });
+
+
+
 // error handler
 // app.use(function (err, req, res, next) {
 //     // set locals, only providing error in development
@@ -143,5 +154,3 @@ socketOrder(io)
 //     // render the error page
 //     res.status(err.status || 5000);
 // });
-
-module.exports = app;

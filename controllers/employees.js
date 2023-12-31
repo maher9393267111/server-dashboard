@@ -2,6 +2,8 @@ const Employee = require("../models/employee");
 const tryCatch = require("./utils/tryCatch");
 
 const getAllEmployees = tryCatch(async (req, res) => {
+
+   console.log("auth_User--->", req?.result)
   const employees = await Employee.find();
   res.status(200).json(employees);
 });

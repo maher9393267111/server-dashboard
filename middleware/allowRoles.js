@@ -35,6 +35,8 @@ const allowRoles = (...roles) => {
             }
           });
           if (ok) {
+           // return user 
+           // req.user =user
             next();
           } else {
             response.status(403).json({ message: "Forbidden" }); // user is forbidden

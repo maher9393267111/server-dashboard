@@ -10,8 +10,20 @@ const customerSchema = new Schema(
 
     address: { type: String, required: false },
     birthday: Date,
-    status :{type:String ,required :true , default:"pending"}
+    status :{type:String ,required :true , default:"pending"},
+
+
+
+    
+  employe_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Employee'
   },
+
+  },
+
+
+
   {
 
     query: {
