@@ -32,6 +32,7 @@ const io = require('socket.io')(server, {
 
 //CẤU HÌNH CÁC EVENT SOCKET
 io.on('connection', (socket) => {
+    console.log("SOCKET START WORK")
     //LISTEN NOTIFICATION
     socket.on('client-notification', (data) => {
         io.emit('server-notification', data);
@@ -41,6 +42,7 @@ io.on('connection', (socket) => {
         console.log('socket is disconnected');
     });
 });
+
 
 //END SOCKET
 

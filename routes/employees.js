@@ -21,7 +21,7 @@ router.get(
   allowRoles("admin", "staff"),
   getEmployeeByName
 );
-router.patch("/:id", auth, allowRoles("admin"), updateEmployee);
-router.delete("/:id", auth, allowRoles("admin"), deleteEmployee);
+router.patch("/:id", auth, allowRoles("admin","staff"), updateEmployee);
+router.delete("/:id", auth, allowRoles("admin","staff"), deleteEmployee);
 
 module.exports = router;
