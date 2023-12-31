@@ -10,6 +10,12 @@ const { findDocument } = require('./helpers/MongoDbHelper');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
+
+const { Server } = require('socket.io');
+const {socketOrder} = require('./helpers/socket')
+
+
+
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -96,6 +102,30 @@ app.get('/', (req, res) => res.status(200).json({
   })
 
 );
+
+
+
+
+
+
+const port =process.env.PORT || '8000'
+
+const server = app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`)
+})
+const io = new Server(server, {
+    cors: {
+        origin: true,
+        Credential: true,
+        // origin: baseURLFrontend.baseURLFrontend,
+        // methods: ["GET", "POST"]
+    }
+});
+
+
+
+socketOrder(io)
+
 
 
 

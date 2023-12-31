@@ -55,6 +55,36 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+
+const port =process.env.PORT || '8000'
+
+// const server = app.listen(port, () => {
+//     console.log(`Server is running at http://localhost:${port}`)
+// })
+// const io = new Server(server, {
+//     cors: {
+//         origin: true,
+//         Credential: true,
+//         // origin: baseURLFrontend.baseURLFrontend,
+//         // methods: ["GET", "POST"]
+//     }
+// });
+
+
+ //socketOrder(io)
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Normalize a port into a number, string, or false.
  */
