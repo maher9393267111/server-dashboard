@@ -5,13 +5,19 @@ const Employee = require("../models/employee");
 const tryCatch = require('./utils/tryCatch');
 const socketHandler = require('../helpers/socket');
 
-const getAllCustomers = tryCatch(async (req, res) => {
-    console.log('AUTH JWT DATA--->', req.user);
+const getAllNotifications = tryCatch(async (req, res) => {
+   // console.log('AUTH JWT DATA--->', req.user);
 
-    const customers = await Customer.find().populate({
-        path: 'employe_id',
+   const receiver = req.query.receiver
+
+
+    const userNotifications = await Notification.find({receiver:receiver})
+    .populate({
+        path: 'sender',
+         path:'receiver'
     });
-    res.status(200).json(customers);
+
+    res.status(200).json(userNotifications);
 });
 
 const getAllCustomersPagination = tryCatch(async (req, res) => {
@@ -28,13 +34,6 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         const skips = pageSize * (pageNum - 1);
         customers = await Customer.find().skip(skips).limit(pageSize);
     }
-
-    const io = req.app.get('socketio');
-       io.sockets.emit('fetch', 'added new customer');
-
-
-
-
     res.status(200).json({ customers: customers, count: totalDocs });
 });
 
@@ -98,8 +97,7 @@ console.log('AUTH AGENT sender'  ,sender ,req.body.employe_id );
         notificationType: 'add-customer',
         date: Date.now(),
         notificationData: {
-          sender,
-          text:'hello'
+          sender
          // image,
           ////filter: post.filter,
         },
@@ -135,11 +133,12 @@ const deleteCustomer = tryCatch(async (req, res) => {
 });
 
 module.exports = {
-    getAllCustomers,
-    getCustomerById,
-    getCustomerByName,
-    createCustomer,
-    updateCustomer,
-    deleteCustomer,
-    getAllCustomersPagination,
+    getAllNotifications
+    // getAllCustomers,
+    // getCustomerById,
+    // getCustomerByName,
+    // createCustomer,
+    // updateCustomer,
+    // deleteCustomer,
+    // getAllCustomersPagination,
 };

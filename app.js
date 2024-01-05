@@ -25,6 +25,7 @@ const employeesRoute = require('./routes/employees');
 const productsRoute = require('./routes/products');
 const ordersRoute = require('./routes/orders');
 const slidersRoute = require('./routes/sliders');
+const notificationsRoute = require('./routes/notifications')
 
 dotenv.config({ path: '.env' });
 mongoose.connect(
@@ -55,14 +56,17 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = jwtSettings.SECRET;
 
+
+
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
+        console.log("☀️☀️☀️" ,_id)
         findDocument(_id, 'employees')
             .then((result) => {
                 if (result) {
                     
-                    //  console.log("resul passport" , result)
+                      console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
                     return done(null, false);
@@ -77,6 +81,7 @@ passport.use(
 
 //ROUTES
 app.use('/upload', uploadRoute);
+app.use('/notifications', notificationsRoute);
 app.use('/auth', loginRoute);
 app.use('/categories', categoriesRoute);
 app.use('/suppliers', suppliersRoute);
@@ -108,11 +113,29 @@ const io = new Server(server, {
 });
 
 
+app.set('socketio', io);
+app.use(passport.initialize());
+  app.use(passport.session());
+
+
+// Authenticate before establishing a socket connection
+
+  
+
+
+
+
+
+
+
+
+
+
+
 // app.use(function (req, res, next) {
 //     req.io = io;
 //     next();
 //   });
-
 
 
 
@@ -139,3 +162,26 @@ module.exports = app;
 //     // render the error page
 //     res.status(err.status || 5000);
 // });
+
+
+// io.use((socket, next) => {
+//     const token = socket.handshake.query.token;
+//     if (token) {
+//       try {
+//         const user = jwt.decode(token, process.env.SECRET_KEY);
+//         if (!user) {
+//           return next(new Error('Not authorized.'));
+//         }
+//         socket.user = user;
+//         console.log("user in sockt joinded" , socket?.user)
+//         return next();
+//       } catch (err) {
+//         next(err);
+//       }
+//     } else {
+//       return next(new Error('Not authorized.'));
+//     }
+//   }).on('connection', (socket) => {
+//     socket.join(socket.id);
+//     console.log('socket connected:', socket.id);
+//   });

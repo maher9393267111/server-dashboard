@@ -17,6 +17,13 @@ const employeeSchema = new Schema(
       byFullName(name) {
         return this.where({ fullName: new RegExp(name, "i") });
       },
+      byRole(role) {
+        return this.where(
+           { roles:role }
+        //  { role: { "$in" : [role]} } 
+          );
+      },
+
     },
   }
 );

@@ -8,6 +8,7 @@ const {
   getEmployeeByName,
   updateEmployee,
   deleteEmployee,
+  getEmployeeByRole
 } = require("../controllers/employees");
 const allowRoles = require("../middleware/allowRoles");
 
@@ -21,7 +22,18 @@ router.get(
   allowRoles("admin", "staff"),
   getEmployeeByName
 );
+
+router.get(
+  "/findrole/:role",
+  auth,
+  allowRoles("admin", "staff"),
+  getEmployeeByRole
+);
+
 router.patch("/:id", auth, allowRoles("admin","staff"), updateEmployee);
 router.delete("/:id", auth, allowRoles("admin","staff"), deleteEmployee);
+
+
+
 
 module.exports = router;

@@ -3,7 +3,7 @@ const tryCatch = require("./utils/tryCatch");
 
 const getAllEmployees = tryCatch(async (req, res) => {
 
-   console.log("auth_User--->", req?.result)
+  //  console.log("auth_User--->", req?.result ,"",req.user)
   const employees = await Employee.find();
   res.status(200).json(employees);
 });
@@ -19,12 +19,21 @@ const getEmployeeByName = tryCatch(async (req, res) => {
   const employee = await Employee.find().byFullName(name);
 
 
-
-
-
-
   res.status(200).json(employee);
 });
+
+
+const getEmployeeByRole = tryCatch(async (req, res) => {
+  const { role } = req.params;
+  const employee = await Employee.findOne().byRole(role);
+  res.status(200).json(employee);
+});
+
+
+
+
+
+
 
 const updateEmployee = tryCatch(async (req, res) => {
   const { id } = req.params;
@@ -45,4 +54,5 @@ module.exports = {
   getEmployeeByName,
   updateEmployee,
   deleteEmployee,
+  getEmployeeByRole
 };
