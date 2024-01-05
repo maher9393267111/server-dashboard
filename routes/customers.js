@@ -13,6 +13,8 @@ const {
 const allowRoles = require("../middleware/allowRoles");
 const auth = require('../middleware/auth');
 
+const jwtAuth = require("../middleware/authJwt");
+
 
 router.get("/",auth, allowRoles("admin", "staff"), getAllCustomersPagination);
 router.get("/:id", auth, allowRoles("admin", "staff"), getCustomerById);
@@ -23,7 +25,7 @@ router.get(
   getCustomerByName
 );
 
-router.post("/", createCustomer);
+router.post("/", auth,allowRoles("admin", "staff") ,createCustomer);
 router.put("/:id", auth, allowRoles("admin", "staff"), updateCustomer);
 router.delete("/:id", auth, allowRoles("admin" ,"staff"), deleteCustomer);
 

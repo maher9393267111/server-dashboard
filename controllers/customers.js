@@ -29,8 +29,9 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         customers = await Customer.find().skip(skips).limit(pageSize);
     }
 
-    const io = req.app.get('socketio');
-       io.sockets.emit('fetch', 'added new customer');
+     const io = req.app.get('socketio');
+        io.sockets.emit('fetch', 'added new customer');
+    //    io.sockets.in(receiver).emit('newPost', post);
 
 
 
@@ -77,7 +78,7 @@ const createCustomer = tryCatch(async (req, res) => {
    // console.log('DATA', data);
 
     const customer = new Customer(data);
-    await customer.save();
+   await customer.save();
 
 
 
@@ -89,31 +90,45 @@ const createCustomer = tryCatch(async (req, res) => {
 //1-find admin id
 
 const admin = await Employee.findOne().byRole("admin");
-const sender = await Employee.findById(req.body.employe_id)
+//const sender = await Employee.findById(req.body.employe_id)
 //admin _id 6598038926ffd999a2d66d85
-console.log('AUTH AGENT sender'  ,sender ,req.body.employe_id );
+console.log('AUTH AGENT✅☑✔✅☑✔ sender'  ,req.user );
+
+
+
     const notification = new Notification({
-        sender: sender._id,
+        sender: req.user._id,
         receiver: admin._id,
         notificationType: 'add-customer',
         date: Date.now(),
         notificationData: {
-          sender,
-          text:'hello'
+          userdata:req.user,
+          text:'hello',
+          title:"new customer Added"
          // image,
           ////filter: post.filter,
         },
       });
 
       await notification.save();
-      socketHandler.sendNotification(req, {
-        ...notification.toObject(),
-        sender: {
-          _id: sender._id,
-          username: sender.username
+
+
+      const io = req.app.get('socketio');
+    //   io.sockets.emit('fetch', 'added new customer');
+       io.sockets.emit('createcustomer', notification);
+
+
+
+
+
+    //   socketHandler.sendNotification(req, {
+    //     ...notification.toObject(),
+    //     sender: {
+    //       _id: sender._id,
+    //       username: sender.username
           
-        },
-      });
+    //     },
+    //   });
 
 
 

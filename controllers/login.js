@@ -30,7 +30,7 @@ const loginEmployee = tryCatch(async (req, res) => {
       };
 
       const token = jwt.sign(payload, jwtSettings.SECRET, {
-        expiresIn: 86400, // TOKEN WILL EXIST IN 24 hours
+        expiresIn: 8640000, // TOKEN WILL EXIST IN 24 hours
         algorithm: "HS512",
       });
 
