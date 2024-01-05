@@ -1,4 +1,5 @@
 const Customer = require('../models/customer');
+const { count } = require('../models/notification');
 const tryCatch = require('./utils/tryCatch');
 
 const getAllCustomers = tryCatch(async (req, res) => {
@@ -29,13 +30,13 @@ const getAllCustomers = tryCatch(async (req, res) => {
         const totalDocs = await Customer.countDocuments();
         const totalPages = Math.ceil(totalDocs / pageSize);
         if (pageNum === 1) {
-          products = await Customer.find().limit(pageSize);
+          customers = await Customer.find().limit(pageSize);
         } else {
           const skips = pageSize * (pageNum - 1);
           customers = await Customer.find().skip(skips).limit(pageSize)
 
         }
-        res.status(200).json(customers);
+        res.status(200).json({customers:customers , count : totalDocs});
     });
     
 
