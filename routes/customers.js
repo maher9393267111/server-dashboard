@@ -8,12 +8,13 @@ const {
   createCustomer,
   updateCustomer,
   deleteCustomer,
+  getAllCustomersPagination
 } = require("../controllers/customers");
 const allowRoles = require("../middleware/allowRoles");
 const auth = require('../middleware/auth');
 
 
-router.get("/",auth, allowRoles("admin", "staff"), getAllCustomers);
+router.get("/",auth, allowRoles("admin", "staff"), getAllCustomersPagination);
 router.get("/:id", auth, allowRoles("admin", "staff"), getCustomerById);
 router.get(
   "/find/:name",

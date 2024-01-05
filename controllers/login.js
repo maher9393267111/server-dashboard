@@ -12,8 +12,8 @@ const registerEmployee = tryCatch(async (req, res) => {
   //HASH PASSWORD
   const salt = await bcrypt.genSalt(10);
   employee.password = await bcrypt.hash(employee.password, salt);
-  await employee.save();
-  res.status(201).json({ ok: true });
+  const employeedata = await employee.save();
+  res.status(201).json({ ok: true ,employeedata });
 });
 
 const loginEmployee = tryCatch(async (req, res) => {

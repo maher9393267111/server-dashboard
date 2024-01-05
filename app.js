@@ -10,16 +10,13 @@ const { findDocument } = require('./helpers/MongoDbHelper');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-
 const { Server } = require('socket.io');
-const {socketOrder} = require('./helpers/socket')
-
-
+const { socketOrder } = require('./helpers/socket');
 
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
- const uploadRoute = require('./routes/upload');
+const uploadRoute = require('./routes/upload');
 const loginRoute = require('./routes/login');
 const categoriesRoute = require('./routes/categories');
 const suppliersRoute = require('./routes/suppliers');
@@ -30,13 +27,17 @@ const ordersRoute = require('./routes/orders');
 const slidersRoute = require('./routes/sliders');
 
 dotenv.config({ path: '.env' });
-mongoose.connect("mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
-    if (err) {
-        console.log('Error connecting to MongoDB');
-    } else {
-        console.log('Connected to MongoDB');
-    }
-});
+mongoose.connect(
+    'mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    (err) => {
+        if (err) {
+            console.log('Error connecting to MongoDB');
+        } else {
+            console.log('Connected to MongoDB');
+        }
+    },
+);
 
 var app = express();
 
@@ -60,7 +61,8 @@ passport.use(
         findDocument(_id, 'employees')
             .then((result) => {
                 if (result) {
-                  //  console.log("resul passport" , result)
+                    
+                    //  console.log("resul passport" , result)
                     return done(null, result);
                 } else {
                     return done(null, false);
@@ -73,67 +75,52 @@ passport.use(
 );
 //END
 
-
-
-
-
 //ROUTES
-app.use("/upload", uploadRoute);
-app.use("/auth", loginRoute);
-app.use("/categories", categoriesRoute);
-app.use("/suppliers", suppliersRoute);
-app.use("/customers", customersRoute);
-app.use("/employees", employeesRoute);
-app.use("/products", productsRoute);
-app.use("/orders", ordersRoute);
-app.use("/sliders", slidersRoute);
-app.use("/public", express.static("public"));
+app.use('/upload', uploadRoute);
+app.use('/auth', loginRoute);
+app.use('/categories', categoriesRoute);
+app.use('/suppliers', suppliersRoute);
+app.use('/customers', customersRoute);
+app.use('/employees', employeesRoute);
+app.use('/products', productsRoute);
+app.use('/orders', ordersRoute);
+app.use('/sliders', slidersRoute);
+app.use('/public', express.static('public'));
 
-
-
-
-
-app.get('/', (req, res) => res.status(200).json({
-    
-    message:"HELLOSERVER"
-  })
-
+app.get('/', (req, res) =>
+    res.status(200).json({
+        message: 'HELLOSERVER',
+    }),
 );
 
-
-
-
-
-
-const port =process.env.PORT || '8000'
+const port = process.env.PORT || '8000';
 
 const server = app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`)
-})
+    console.log(`Server is running at http://localhost:${port}`);
+});
 const io = new Server(server, {
     cors: {
-       // origin: true,
-        //Credential: true,
-         origin: "http://localhost:3000",
-         methods: ["GET", "POST"]
-    }
+         origin: true,
+        Credential: true,
+        // origin: 'http://localhost:3000',
+        // methods: ['GET', 'POST'],
+    },
 });
 
 
-
-socketOrder(io)
-
-
-
-
+// app.use(function (req, res, next) {
+//     req.io = io;
+//     next();
+//   });
 
 
 
 
-
-
+socketOrder(io);
 
 module.exports = app;
+
+
 
 
 
@@ -142,8 +129,6 @@ module.exports = app;
 //     next(createError(404));
 
 // });
-
-
 
 // error handler
 // app.use(function (err, req, res, next) {
