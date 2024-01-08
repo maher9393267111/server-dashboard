@@ -6,6 +6,8 @@ const Category = require('../models/category');
 const Slider = require('../models/slider');
 const Supplier = require('../models/supplier');
 
+
+
 //MULTER UPLOAD
 const multer = require('multer');
 
@@ -50,6 +52,7 @@ const uploadCategoryImage = tryCatch((req, res, next) => {
         }
     });
 });
+
 
 const uploadSliderImage = tryCatch((req, res, next) => {
     upload.single('file')(req, res, async (err) => {

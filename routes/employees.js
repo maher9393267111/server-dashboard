@@ -8,13 +8,19 @@ const {
   getEmployeeByName,
   updateEmployee,
   deleteEmployee,
-  getEmployeeByRole
+  getEmployeeByRole,
+  
 } = require("../controllers/employees");
 const allowRoles = require("../middleware/allowRoles");
 
 const auth = passport.authenticate("jwt", { session: false });
 
 router.get("/", auth, allowRoles("admin", "staff"), getAllEmployees);
+
+
+
+
+
 router.get("/:id", auth, allowRoles("admin", "staff"), getEmployeeById);
 router.get(
   "/find/:name",
@@ -29,6 +35,9 @@ router.get(
   allowRoles("admin", "staff"),
   getEmployeeByRole
 );
+
+
+
 
 router.patch("/:id", auth, allowRoles("admin","staff"), updateEmployee);
 router.delete("/:id", auth, allowRoles("admin","staff"), deleteEmployee);

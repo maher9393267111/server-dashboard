@@ -79,6 +79,7 @@ passport.use(
 );
 //END
 
+
 //ROUTES
 app.use('/upload', uploadRoute);
 app.use('/notifications', notificationsRoute);
@@ -114,14 +115,13 @@ const io = new Server(server, {
 
 
 app.set('socketio', io);
-app.use(passport.initialize());
-  app.use(passport.session());
+// app.use(passport.initialize());
+//   app.use(passport.session());
 
 
 // Authenticate before establishing a socket connection
 
   
-
 
 
 
@@ -139,7 +139,7 @@ app.use(passport.initialize());
 
 
 
-socketOrder(io);
+//socketOrder(io);
 
 module.exports = app;
 

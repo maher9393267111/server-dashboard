@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { array } = require("yup/lib/locale");
 const { Schema, model } = mongoose;
 
 const customerSchema = new Schema(
@@ -11,9 +12,17 @@ const customerSchema = new Schema(
     address: { type: String, required: false },
     birthday: Date,
     status :{type:String ,required :true , default:"pending"},
-
-
-
+   
+    file: { link:String , filename:String },
+ 
+    files:{type:Array},
+    birthday: {type:String},
+    gender:{type:String},
+    ssn:{type:Number},
+    zip:{type:Number},
+    signature:{type:String},
+    city:{type:String},
+    signature:{type:String},
     
   employe_id: {
     type: mongoose.Schema.Types.ObjectId,
