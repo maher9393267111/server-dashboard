@@ -9,7 +9,8 @@ const {
   updateCustomer,
   deleteCustomer,
   getAllCustomersPagination,
-  getAllAgentCustomers
+  getAllAgentCustomers,
+  updateCustomerStatus
 } = require("../controllers/customers");
 const allowRoles = require("../middleware/allowRoles");
 const auth = require('../middleware/auth');
@@ -30,5 +31,9 @@ router.get(
 router.post("/", auth,allowRoles("admin", "staff") ,createCustomer);
 router.put("/:id", auth, allowRoles("admin", "staff"), updateCustomer);
 router.delete("/:id", auth, allowRoles("admin" ,"staff"), deleteCustomer);
+
+
+// updateCustomerStatus
+router.put("/status/:id", auth, allowRoles("admin" ,"staff"), updateCustomerStatus);
 
 module.exports = router;

@@ -61,12 +61,12 @@ opts.secretOrKey = jwtSettings.SECRET;
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
-        console.log("☀️☀️☀️" ,_id)
+        //console.log("☀️☀️☀️" ,_id)
         findDocument(_id, 'employees')
             .then((result) => {
                 if (result) {
                     
-                      console.log("resul passport  ☀️  ☀️  ☀️" , result)
+                    //  console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
                     return done(null, false);

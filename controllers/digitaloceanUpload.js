@@ -81,7 +81,7 @@ exports.sendAvatar = async (req, res) => {
 exports.DeleteImage = async (req, res) => {
     try {
         const { filename, folder = null } = req.body;
-        console.log('fileName', filename);
+        console.log('fileName🧱⬇️↖️🔝🔙⚛🕎🧱⬇️↖️🔝🔙⚛🕎🧱⬇️↖️🔝🔙⚛🕎', filename ,'fo;der' ,folder);
         await s3Client.send(
             new DeleteObjectCommand({
                 Bucket: 'dash93',
@@ -89,7 +89,7 @@ exports.DeleteImage = async (req, res) => {
             }),
         );
 
-        return res.status(201).json({ message: 'ok' });
+        return res.status(201).json({ message: 'ok' ,filename ,folder });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });
@@ -124,7 +124,7 @@ exports.uploadMulti = async (req, res) => {
 
             var result = await s3Client.send(new PutObjectCommand(params));
 
-            images.push({ filename: fileName, link: `${cdnEndpoint}/${fileName}` });
+            images.push({ filename: fileName, link: `${cdnEndpoint}/hamad/${fileName}` });
         }
 
         console.log('IMAGES', images);

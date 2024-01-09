@@ -14,7 +14,7 @@ const customerSchema = new Schema(
     status :{type:String ,required :true , default:"pending"},
    
     file: { link:String , filename:String },
- 
+ audio:String,
     files:{type:Array},
     birthday: {type:String},
     gender:{type:String},
@@ -35,6 +35,7 @@ const customerSchema = new Schema(
 
   {
 
+    
     query: {
       byFirstName(name) {
         return this.where({ firstName: new RegExp(name, "i") });

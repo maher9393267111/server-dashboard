@@ -14,62 +14,85 @@ const getAllCustomers = tryCatch(async (req, res) => {
     res.status(200).json(customers);
 });
 
-
+// only for admin
 
 const getAllAgentCustomers = tryCatch(async (req, res) => {
     console.log('AUTH JWT DATA--->', req.user);
 
-  
-    
     const { page, size } = req.query;
     console.log(page, size);
     const pageNum = Number(page);
     const pageSize = Number(size);
     let customers = [];
-    const totalDocs = await Customer.countDocuments({employe_id:req.user._id});
+    const totalDocs = await Customer.countDocuments({ employe_id: req.user._id });
     const totalPages = Math.ceil(totalDocs / pageSize);
     if (pageNum === 1) {
-        customers = await Customer.find({employe_id:req.user._id}).limit(pageSize);
+        customers = await Customer.find({ employe_id: req.user._id }).limit(pageSize);
     } else {
         const skips = pageSize * (pageNum - 1);
-        customers = await Customer.find({employe_id:req.user._id}).skip(skips).limit(pageSize);
+        customers = await Customer.find({ employe_id: req.user._id }).skip(skips).limit(pageSize);
     }
-console.log("customer___>>>" ,customers)
+    console.log('customer___>>>', customers);
     const io = req.app.get('socketio');
     io.sockets.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
     res.status(200).json({ customers: customers, count: totalDocs });
-
-
-
-
-
-
-
 });
 
-
-
-
-
-
-
-
+// admin show all customers
 
 const getAllCustomersPagination = tryCatch(async (req, res) => {
     const { page, size } = req.query;
     console.log(page, size);
     const pageNum = Number(page);
     const pageSize = Number(size);
+
+    // customer status query if exist
+
+    const status = req.query.status || '';
+    console.log(status, 'STAAAAAAAAAAA');
+    //status=accepted
+    // customer find  condition with status
+
+    let filter = {};
+    if (req.query.status === 'accepted') {
+        filter.status = 'accepted';
+    } else if (req.query.status === 'pending') {
+        filter.status = 'pending';
+    } else if (req.query.status === 'admincustomers') {
+        filter.employe_id = req.user._id;
+    }
+
+
+
+    console.log('req.user', req.user._id, 'query admin owner', filter);
+
+    const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
+    const sortBy = !req.query.sortBy  ? '_id' : req.query.sortBy;
+
+    console.log("sortBy 🌙🌙🌙" , sortBy)
+
+
+    const sort = {};
+    if (sortBy === 'name') {
+        sort['name'] = sortDirection;
+    } else if (sortBy === 'email') {
+        sort['email'] = sortDirection;
+    } else if (sortBy === 'firstName') {
+        sort['firstName'] = sortDirection;
+    } else {
+        sort['_id'] = sortDirection;
+    }
+
     let customers = [];
-    const totalDocs = await Customer.countDocuments();
+    const totalDocs = await Customer.countDocuments(filter);
     const totalPages = Math.ceil(totalDocs / pageSize);
     if (pageNum === 1) {
-        customers = await Customer.find().limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).limit(pageSize);
     } else {
         const skips = pageSize * (pageNum - 1);
-        customers = await Customer.find().skip(skips).limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize);
     }
 
     const io = req.app.get('socketio');
@@ -77,9 +100,6 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     //    io.sockets.in(receiver).emit('newPost', post);
 
     res.status(200).json({ customers: customers, count: totalDocs });
-
-
-
 });
 
 const getCustomerById = tryCatch(async (req, res) => {
@@ -177,6 +197,31 @@ const deleteCustomer = tryCatch(async (req, res) => {
     res.status(200).json({ ok: true });
 });
 
+// ----update customer status by admin---
+
+const updateCustomerStatus = tryCatch(async (req, res) => {
+    const { status, note } = req.body;
+
+    const { id } = req.params;
+
+    // if status is rejected delete customer
+
+    if (status === 'rejected') {
+        await Customer.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Customer deleted successfully' });
+    }
+
+    // else only update customer status
+    else {
+        const data = {
+            status: status,
+        };
+
+        const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
+        res.status(200).json({ message: 'Customer status is accepted', customer });
+    }
+});
+
 module.exports = {
     getAllCustomers,
     getCustomerById,
@@ -185,5 +230,6 @@ module.exports = {
     updateCustomer,
     deleteCustomer,
     getAllCustomersPagination,
-    getAllAgentCustomers
+    getAllAgentCustomers,
+    updateCustomerStatus,
 };
