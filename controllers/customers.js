@@ -23,15 +23,58 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     console.log(page, size);
     const pageNum = Number(page);
     const pageSize = Number(size);
+
+
+    const status = req.query.status || '';
+    console.log(status, 'STAAAAAAAAAAA');
+    //status=accepted
+    // customer find  condition with status
+
+    let filter = {};
+
+filter.employe_id = req.user._id
+
+
+
+    console.log('req.user', req.user._id, 'query admin owner', filter);
+
+    const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
+    const sortBy = !req.query.sortBy  ? '_id' : req.query.sortBy;
+
+    console.log("sortBy 🌙🌙🌙" , sortBy)
+
+
+    const sort = {};
+
+    
+  if (sortBy.toLowerCase() === 'email') {
+        sort['email'] = sortDirection;
+    } else if (sortBy.toLowerCase() === 'firstName') {
+        sort['firstName'] = sortDirection;
+    } else {
+        sort['_id'] = sortDirection;
+    }
+
+console.log('FILTERRRRR' , filter)
+
+
+
+
+
+
     let customers = [];
-    const totalDocs = await Customer.countDocuments({ employe_id: req.user._id });
+    //employe_id: req.user._id 
+    const totalDocs = await Customer.countDocuments(filter);
     const totalPages = Math.ceil(totalDocs / pageSize);
     if (pageNum === 1) {
-        customers = await Customer.find({ employe_id: req.user._id }).limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).limit(pageSize);
     } else {
         const skips = pageSize * (pageNum - 1);
-        customers = await Customer.find({ employe_id: req.user._id }).skip(skips).limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize);
     }
+
+
+
     console.log('customer___>>>', customers);
     const io = req.app.get('socketio');
     io.sockets.emit('fetch', 'added new customer');
@@ -85,6 +128,8 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         sort['_id'] = sortDirection;
     }
 
+
+
     let customers = [];
     const totalDocs = await Customer.countDocuments(filter);
     const totalPages = Math.ceil(totalDocs / pageSize);
@@ -101,6 +146,17 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
+
+
+
+
+
+
+
+
+
+
+
 
 const getCustomerById = tryCatch(async (req, res) => {
     const { id } = req.params;
