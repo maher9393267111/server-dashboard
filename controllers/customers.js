@@ -24,7 +24,6 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     const pageNum = Number(page);
     const pageSize = Number(size);
 
-
     const status = req.query.status || '';
     console.log(status, 'STAAAAAAAAAAA');
     //status=accepted
@@ -32,22 +31,18 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
 
     let filter = {};
 
-filter.employe_id = req.user._id
-
-
+    filter.employe_id = req.user._id;
 
     console.log('req.user', req.user._id, 'query admin owner', filter);
 
     const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
-    const sortBy = !req.query.sortBy  ? '_id' : req.query.sortBy;
+    const sortBy = !req.query.sortBy ? '_id' : req.query.sortBy;
 
-    console.log("sortBy 🌙🌙🌙" , sortBy)
-
+    console.log('sortBy 🌙🌙🌙', sortBy);
 
     const sort = {};
 
-    
-  if (sortBy.toLowerCase() === 'email') {
+    if (sortBy.toLowerCase() === 'email') {
         sort['email'] = sortDirection;
     } else if (sortBy.toLowerCase() === 'firstName') {
         sort['firstName'] = sortDirection;
@@ -55,15 +50,10 @@ filter.employe_id = req.user._id
         sort['_id'] = sortDirection;
     }
 
-console.log('FILTERRRRR' , filter)
-
-
-
-
-
+    console.log('FILTERRRRR', filter);
 
     let customers = [];
-    //employe_id: req.user._id 
+    //employe_id: req.user._id
     const totalDocs = await Customer.countDocuments(filter);
     const totalPages = Math.ceil(totalDocs / pageSize);
     if (pageNum === 1) {
@@ -72,8 +62,6 @@ console.log('FILTERRRRR' , filter)
         const skips = pageSize * (pageNum - 1);
         customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize);
     }
-
-
 
     console.log('customer___>>>', customers);
     const io = req.app.get('socketio');
@@ -107,15 +95,12 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         filter.employe_id = req.user._id;
     }
 
-
-
     console.log('req.user', req.user._id, 'query admin owner', filter);
 
     const sortDirection = req.query.sortDirection === 'asc' ? 'asc' : 'desc';
-    const sortBy = !req.query.sortBy  ? '_id' : req.query.sortBy;
+    const sortBy = !req.query.sortBy ? '_id' : req.query.sortBy;
 
-    console.log("sortBy 🌙🌙🌙" , sortBy)
-
+    console.log('sortBy 🌙🌙🌙', sortBy);
 
     const sort = {};
     if (sortBy === 'name') {
@@ -127,8 +112,6 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     } else {
         sort['_id'] = sortDirection;
     }
-
-
 
     let customers = [];
     const totalDocs = await Customer.countDocuments(filter);
@@ -146,17 +129,6 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
-
-
-
-
-
-
-
-
-
-
-
 
 const getCustomerById = tryCatch(async (req, res) => {
     const { id } = req.params;
@@ -262,20 +234,31 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
 
     // if status is rejected delete customer
 
-    if (status === 'rejected') {
-        await Customer.findByIdAndDelete(id);
-        res.status(200).json({ message: 'Customer deleted successfully' });
-    }
+    // if (status === 'rejected') {
+    //     await Customer.findByIdAndDelete(id);
+    //     res.status(200).json({ message: 'Customer deleted successfully' });
+    // }
+
+
 
     // else only update customer status
-    else {
+    // else {
         const data = {
             status: status,
         };
 
         const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
+
+
         res.status(200).json({ message: 'Customer status is accepted', customer });
-    }
+
+
+// then send to this customer maked Agent notification tell him new status  of customer and update agent nnotifications and customers table
+
+
+
+
+    // }
 });
 
 module.exports = {

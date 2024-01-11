@@ -9,7 +9,7 @@ const employeeSchema = new Schema(
     address: { type: String, required: true },
     birthday: Date,
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true, minLength: 6 },
+    password: { type: String, required: true, minLength: 3 },
     roles: { type: Array, default: "staff" },
   },
   {
