@@ -12,10 +12,10 @@ const NotificationSchema = new Schema({
   },
 
 
-//   notificationType: {
-//     type: String,
-//     enum: ['follow', 'like', 'comment', 'mention'],
-//   },
+  notificationType: {
+    type: String,
+    // enum: ['follow', 'like', 'comment', 'mention'],
+  },
 
   date: Date,
   notificationData: Object,

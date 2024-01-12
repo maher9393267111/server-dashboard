@@ -91,6 +91,8 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         filter.status = 'accepted';
     } else if (req.query.status === 'pending') {
         filter.status = 'pending';
+    } else if (req.query.status === 'rejected') {
+        filter.status = 'rejected';
     } else if (req.query.status === 'admincustomers') {
         filter.employe_id = req.user._id;
     }
@@ -103,6 +105,11 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     console.log('sortBy 🌙🌙🌙', sortBy);
 
     const sort = {};
+
+    if (sortBy === 'date') {
+        sort['date'] = sortDirection;
+    }
+
     if (sortBy === 'name') {
         sort['name'] = sortDirection;
     } else if (sortBy === 'email') {
@@ -138,27 +145,67 @@ const getCustomerById = tryCatch(async (req, res) => {
 
 const getCustomerByName = tryCatch(async (req, res) => {
     const { name } = req.params;
-    // then add cutomer_id in params to create new  serch customer
-    const customer = await Customer.find().byFirstName(name).populate({
-        path: 'employe_id',
-    });
+    const { searchtype } = req.query;
+
+    const user = req.user;
+
+    const filter = {};
+
+    if (searchtype === 'name') {
+        filter.firstName = name;
+    } else if (searchtype === 'ssn') {
+        filter.ssn = name;
+    }
+
+    console.log('filterOBJ❤️❤️❤️', filter, searchtype, req.query);
+
+    let customer = await Customer.find(filter);
+
+    console.log('Customer founded', customer);
 
     // get employe if exist if not exist  create it with pending it
 
     if (customer?.length === 0) {
         const data = {
-            firstName: req.params.name,
+            firstName: searchtype === 'ssn' ? 'anemous' : req.params.name,
             status: 'pending',
-            email: `${req.params.name}@gmail.com`,
-            employe_id: req.user._id,
+            email: searchtype === 'ssn' ? 'anemous@gmail.com' : `${req.params.name}@gmail.com`,
+            employe_id: user._id,
+            ssn: searchtype === 'ssn' ? name : 0,
         };
+
         const customernew = new Customer(data);
+
+        // notifay admin with socketio
+
+        const customerAgent = await Employee.findById(req.user._id);
+        const admin = await Employee.findOne().byRole('admin');
+
+        const notification = new Notification({
+            sender: req.user_id,
+            receiver: admin._id,
+            notificationType: 'search_customer',
+            date: Date.now(),
+            notificationData: {
+                senderData: req.user.username,
+                text: 'hello',
+                title: 'Search Customer',
+                customer: customernew,
+
+                myRole: req.user?.roles,
+            },
+        });
+
+        await notification.save();
+
+        const io = req.app.get('socketio');
+        io.sockets.emit('search_customer', notification);
 
         await customernew.save();
 
-        res.status(200).json({ message: 'pending customer created', customernew });
+        res.status(200).json({ message: false, customernew });
     } else {
-        res.status(200).json(customer);
+        res.status(200).json({ message: true });
     }
 });
 
@@ -186,7 +233,7 @@ const createCustomer = tryCatch(async (req, res) => {
         notificationType: 'add-customer',
         date: Date.now(),
         notificationData: {
-            userdata: req.user,
+            senderData: req.user,
             text: 'hello',
             title: 'new customer Added',
             // image,
@@ -228,7 +275,9 @@ const deleteCustomer = tryCatch(async (req, res) => {
 // ----update customer status by admin---
 
 const updateCustomerStatus = tryCatch(async (req, res) => {
-    const { status, note } = req.body;
+    const { status, note, agentId } = req.body;
+
+    console.log('Body', req.body);
 
     const { id } = req.params;
 
@@ -239,24 +288,43 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     //     res.status(200).json({ message: 'Customer deleted successfully' });
     // }
 
-
-
     // else only update customer status
     // else {
-        const data = {
+    const data = {
+        status: status,
+    };
+
+    const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
+
+    const customerAgent = await Employee.findById(agentId);
+    const admin = await Employee.findOne().byRole('admin');
+
+    const notification = new Notification({
+        sender: admin?._id,
+        receiver: agentId,
+        notificationType: 'change_status',
+        date: Date.now(),
+        notificationData: {
+            senderData: 'admin',
+            text: 'hello',
+            title: 'your customer Status is changed',
             status: status,
-        };
+            customer: customer,
+            myRole: customerAgent?.roles,
 
-        const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
+            // image,
+            ////filter: post.filter,
+        },
+    });
 
+    await notification.save();
 
-        res.status(200).json({ message: 'Customer status is accepted', customer });
+    const io = req.app.get('socketio');
+    io.sockets.emit('status', notification);
 
+    res.status(200).json({ message: 'Customer status is accepted', customer });
 
-// then send to this customer maked Agent notification tell him new status  of customer and update agent nnotifications and customers table
-
-
-
+    // then send to this customer maked Agent notification tell him new status  of customer and update agent nnotifications and customers table
 
     // }
 });

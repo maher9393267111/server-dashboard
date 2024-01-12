@@ -23,6 +23,7 @@ const customerSchema = new Schema(
     signature:{type:String},
     city:{type:String},
     signature:{type:String},
+    date: { type: Date, default: Date.now },
     
   employe_id: {
     type: mongoose.Schema.Types.ObjectId,
