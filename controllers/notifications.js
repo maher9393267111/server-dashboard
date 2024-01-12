@@ -28,7 +28,12 @@ const UpdateNotificationToRead = tryCatch(async (req, res) => {
 
     console.log("req>BODY" , req.body.notificationId)
 
-    const notification = await Notification.findByIdAndUpdate(notificationId, { read: true }, { new: true });
+   // const notification = await Notification.findByIdAndUpdate(notificationId, { read: true }, { new: true });
+
+
+    //delete notify -->
+  const  notification = await Notification.findByIdAndDelete(notificationId);
+
 
     res.status(200).json(notification);
 });
