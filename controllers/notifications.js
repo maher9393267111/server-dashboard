@@ -26,6 +26,8 @@ const UpdateNotificationToRead = tryCatch(async (req, res) => {
     const user = req.user;
     const { receiver, notificationId } = req.body;
 
+    console.log("req>BODY" , req.body.notificationId)
+
     const notification = await Notification.findByIdAndUpdate(notificationId, { read: true }, { new: true });
 
     res.status(200).json(notification);

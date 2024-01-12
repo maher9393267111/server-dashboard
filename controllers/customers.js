@@ -190,12 +190,14 @@ const getCustomerByName = tryCatch(async (req, res) => {
                 senderData: req.user.username,
                 text: 'hello',
                 title: 'Search Customer',
-                customer: customernew,
+                customer: "new customer created by seach",
+                searchType:searchtype,
 
                 myRole: req.user?.roles,
             },
         });
 
+        
         await notification.save();
 
         const io = req.app.get('socketio');
