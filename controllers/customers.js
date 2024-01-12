@@ -197,7 +197,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             },
         });
 
-        
+
         await notification.save();
 
         const io = req.app.get('socketio');
@@ -235,11 +235,13 @@ const createCustomer = tryCatch(async (req, res) => {
         notificationType: 'add-customer',
         date: Date.now(),
         notificationData: {
-            senderData: req.user,
+            senderData: req.user.username,
             text: 'hello',
-            title: 'new customer Added',
-            // image,
-            ////filter: post.filter,
+            title: 'Add Customer',
+            customer: "new customer created by Form",
+            searchType:"add_customer",
+
+            myRole: req.user?.roles,
         },
     });
 
