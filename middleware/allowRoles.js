@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { findDocument } = require("../helpers/MongoDbHelper");
+const Employee = require('../models/employee')
 
 // CHECK ROLES
 const allowRoles = (...roles) => {
@@ -21,9 +22,9 @@ const allowRoles = (...roles) => {
 
 
     // FING BY _id
-    findDocument(_id, "employees")
+    Employee.findById(_id)
       .then((user) => {
-//console.log("user THENNNN" ,user)
+console.log("user THE☀️☀️☀️☀️☀️☀️☀️NNNN" ,user)
 
         if (user && user.roles) {
           console.log(user.roles ,"ROLEEEEEEEEEEEE")

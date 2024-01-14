@@ -12,7 +12,7 @@ const passport = require('passport');
 
 const { Server } = require('socket.io');
 const { socketOrder } = require('./helpers/socket');
-
+const Employee = require('./models/employee')
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -59,17 +59,22 @@ opts.secretOrKey = jwtSettings.SECRET;
 
 
 
+
+
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
-        //console.log("☀️☀️☀️" ,_id)
-        findDocument(_id, 'employees')
+        console.log("☀️☀️☀️" ,_id)
+      //  findDocument
+        Employee.findById(_id)
             .then((result) => {
+                console.log("RESULT☀️☀️☀️☀️" ,result)
                 if (result) {
                     
-                    //  console.log("resul passport  ☀️  ☀️  ☀️" , result)
+                      console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
+                    console.log("NOOO☀️☀️☀️☀️O" )
                     return done(null, false);
                 }
             })
@@ -79,6 +84,7 @@ passport.use(
     }),
 );
 //END
+
 
 
 //ROUTES
@@ -145,44 +151,3 @@ app.set('socketio', io);
 module.exports = app;
 
 
-
-
-
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//     next(createError(404));
-
-// });
-
-// error handler
-// app.use(function (err, req, res, next) {
-//     // set locals, only providing error in development
-//     res.locals.message = err.message;
-//     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//     // render the error page
-//     res.status(err.status || 5000);
-// });
-
-
-// io.use((socket, next) => {
-//     const token = socket.handshake.query.token;
-//     if (token) {
-//       try {
-//         const user = jwt.decode(token, process.env.SECRET_KEY);
-//         if (!user) {
-//           return next(new Error('Not authorized.'));
-//         }
-//         socket.user = user;
-//         console.log("user in sockt joinded" , socket?.user)
-//         return next();
-//       } catch (err) {
-//         next(err);
-//       }
-//     } else {
-//       return next(new Error('Not authorized.'));
-//     }
-//   }).on('connection', (socket) => {
-//     socket.join(socket.id);
-//     console.log('socket connected:', socket.id);
-//   });
