@@ -74,7 +74,7 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
 // admin show all customers
 
 const getAllCustomersPagination = tryCatch(async (req, res) => {
-    const { page, size } = req.query;
+    const { page, size ,employeid } = req.query;
     console.log(page, size);
     const pageNum = Number(page);
     const pageSize = Number(size);
@@ -96,6 +96,26 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     } else if (req.query.status === 'admincustomers') {
         filter.employe_id = req.user._id;
     }
+ 
+
+    console.log("EMPLOY🌐🌐🌐🌐🌐🌐EID" , employeid)
+
+
+
+     if (employeid !== 'undefined' && !req.query.status  ) {
+        console.log("SSSSSSSSSSSSSSSSSTTT" ,req.query.status)
+        filter.employe_id = employeid;
+    }
+
+
+    console.log("FILTER 🔸️🔷️🔶️🔸️🔷️🔶️" ,filter)
+   
+
+
+
+
+
+
 
     console.log('req.user', req.user._id, 'query admin owner', filter);
 
