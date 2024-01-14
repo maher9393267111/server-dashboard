@@ -9,6 +9,7 @@ const {
   updateEmployee,
   deleteEmployee,
   getEmployeeByRole,
+  getCustomersCount
   
 } = require("../controllers/employees");
 const allowRoles = require("../middleware/allowRoles");
@@ -43,6 +44,6 @@ router.patch("/:id", auth, allowRoles("admin","staff"), updateEmployee);
 router.delete("/:id", auth, allowRoles("admin","staff"), deleteEmployee);
 
 
-
+router.get("/chart/find", getCustomersCount);
 
 module.exports = router;
