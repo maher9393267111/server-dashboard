@@ -46,6 +46,9 @@ const getCustomersCount = async (req, res) => {
 
         const result = await Customer.aggregate([{ $group: { _id: '$employe_id', count: { $sum: 1 } } }]);
 
+        const totalAgents =  await Employee.countDocuments();
+        const totalCustomers =  await Customer.countDocuments();
+
         const labels = result.map((entry) => entry._id);
         const data = result.map((entry) => entry.count);
 
@@ -71,6 +74,8 @@ const getCustomersCount = async (req, res) => {
       
         res.status(200).json({
             agentsNames,
+            totalAgents,
+            totalCustomers
         });
     } catch (err) {
         console.log(err);

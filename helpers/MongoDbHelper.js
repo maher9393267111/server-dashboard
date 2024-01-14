@@ -4,7 +4,17 @@ const { MongoClient, ObjectId } = require('mongodb');
 
 // Chuỗi kết nối đến MongoDB
 const DATABASE_NAME = 'theme';
-const CONNECTION_STRING = "mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority";
+const CONNECTION_STRING =
+"mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority"
+
+
+
+
+
+
+// "mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority";
+
+
 
 // INSERT: Thêm mới (một)
 function insertDocument(data, collectionName) {

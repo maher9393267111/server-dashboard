@@ -29,7 +29,8 @@ const notificationsRoute = require('./routes/notifications')
 
 dotenv.config({ path: '.env' });
 mongoose.connect(
-    'mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority',
+    //'mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority',
+    "mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
         if (err) {
