@@ -199,7 +199,8 @@ const getCustomerByName = tryCatch(async (req, res) => {
         // notifay admin with socketio
 
         const customerAgent = await Employee.findById(req.user._id);
-        const admin = await Employee.findOne().byRole('admin');
+        const admin = await Employee.findOne({ roles:role })
+        //.byRole('admin');
 
         const notification = new Notification({
             sender: req.user_id,
