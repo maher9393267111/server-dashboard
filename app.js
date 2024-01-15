@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var cors = require('cors');
 var dotenv = require('dotenv');
 
-const { findDocument } = require('./helpers/MongoDbHelper');
+// const { findDocument } = require('./helpers/MongoDbHelper');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
@@ -18,13 +18,10 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const uploadRoute = require('./routes/upload');
 const loginRoute = require('./routes/login');
-const categoriesRoute = require('./routes/categories');
-const suppliersRoute = require('./routes/suppliers');
+
 const customersRoute = require('./routes/customers');
 const employeesRoute = require('./routes/employees');
-const productsRoute = require('./routes/products');
-const ordersRoute = require('./routes/orders');
-const slidersRoute = require('./routes/sliders');
+
 const notificationsRoute = require('./routes/notifications')
 
 dotenv.config({ path: '.env' });
@@ -64,17 +61,17 @@ opts.secretOrKey = jwtSettings.SECRET;
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
-        console.log("☀️☀️☀️" ,_id)
+       
       //  findDocument
         Employee.findById(_id)
             .then((result) => {
-                console.log("RESULT☀️☀️☀️☀️" ,result)
+                
                 if (result) {
                     
                       console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
-                    console.log("NOOO☀️☀️☀️☀️O" )
+                
                     return done(null, false);
                 }
             })
@@ -91,13 +88,10 @@ passport.use(
 app.use('/upload', uploadRoute);
 app.use('/notifications', notificationsRoute);
 app.use('/auth', loginRoute);
-app.use('/categories', categoriesRoute);
-app.use('/suppliers', suppliersRoute);
+
 app.use('/customers', customersRoute);
 app.use('/employees', employeesRoute);
-app.use('/products', productsRoute);
-app.use('/orders', ordersRoute);
-app.use('/sliders', slidersRoute);
+
 app.use('/public', express.static('public'));
 
 app.get('/', (req, res) =>
