@@ -22,6 +22,8 @@ const customerSchema = new Schema(
     zip:{type:Number},
     signature:{type:String},
     city:{type:String},
+    state:{type:String},
+    work:{type:String},
     signature:{type:String},
     date: { type: Date, default: Date.now },
     
