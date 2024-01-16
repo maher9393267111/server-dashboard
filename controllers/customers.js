@@ -98,7 +98,7 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     }
  
 
-    console.log("EMPLOY🌐🌐🌐🌐🌐🌐EID" , employeid)
+    console.log("EMPLOY🌐🌐🌐🌐🌐🌐EID" , filter)
 
 
 
