@@ -22,7 +22,7 @@ const allowRoles = (...roles) => {
         // FING BY _id
         Employee.findById(_id)
             .then((user) => {
-                console.log('user THE☀️☀️☀️☀️☀️☀️☀️NNNN', user);
+            //    console.log('user THE☀️☀️☀️☀️☀️☀️☀️NNNN', user);
 
                 if (user && user.roles) {
                     console.log(user.roles, 'ROLEEEEEEEEEEEE');

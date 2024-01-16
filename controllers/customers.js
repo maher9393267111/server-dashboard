@@ -199,7 +199,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
         // notifay admin with socketio
 
         const customerAgent = await Employee.findById(req.user._id);
-        const admin = await Employee.findOne({ roles:role })
+        const admin = await Employee.findOne({ roles:"admin" })
         //.byRole('admin');
 
         const notification = new Notification({
@@ -245,10 +245,11 @@ const createCustomer = tryCatch(async (req, res) => {
 
     //1-find admin id
 
-    const admin = await Employee.findOne().byRole('admin');
+    const admin = await Employee.findOne({roles:'admin'})
+    //.byRole('admin');
     //const sender = await Employee.findById(req.body.employe_id)
     //admin _id 6598038926ffd999a2d66d85
-    console.log('AUTH AGENT✅☑✔✅☑✔ sender', req.user);
+    console.log('AUTH AGENT✅☑✔✅☑✔ sender', admin);
 
     const notification = new Notification({
         sender: req.user._id,
@@ -322,7 +323,8 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
 
     const customerAgent = await Employee.findById(agentId);
-    const admin = await Employee.findOne().byRole('admin');
+    const admin = await Employee.findOne({roles:'admin'})
+    //.byRole('admin');
 
     const notification = new Notification({
         sender: admin?._id,
