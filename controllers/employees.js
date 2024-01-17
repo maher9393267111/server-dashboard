@@ -3,9 +3,41 @@ const Customer = require('../models/customer');
 const tryCatch = require('./utils/tryCatch');
 
 const getAllEmployees = tryCatch(async (req, res) => {
-    //  console.log("auth_User--->", req?.result ,"",req.user)
-    const employees = await Employee.find();
-    res.status(200).json(employees);
+    const {search} = req.query
+   
+
+
+
+if (search){
+
+    console.log(search)
+    let employees = await Employee.find({
+        $or: [
+          { username: new RegExp(search, "i")},
+          { email: new RegExp(search, "i") },
+          { phoneNumber: search },
+        ],
+      })
+
+      res.status(200).json(employees);
+
+    }
+
+
+
+    else {
+        console.log('NOT SEARCH')
+        const employees = await Employee.find({});
+        res.status(200).json(employees)
+
+    }
+
+
+// );
+
+
+
+
 });
 
 const getEmployeeById = tryCatch(async (req, res) => {
