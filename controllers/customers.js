@@ -101,8 +101,8 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     console.log("EMPLOY🌐🌐🌐🌐🌐🌐EID" , filter)
 
 
-
-     if (employeid !== 'undefined' && !req.query.status  ) {
+//&& req.query.status
+     if (employeid !== 'undefined'    ) {
         console.log("SSSSSSSSSSSSSSSSSTTT" ,req.query.status)
         filter.employe_id = employeid;
     }
