@@ -6,11 +6,11 @@ const getAllEmployees = tryCatch(async (req, res) => {
     const {search} = req.query
    
 
+console.log(typeof(search) ,"QUERYYYY")
 
+if (search !== 'undefined' ){
 
-if (search){
-
-    console.log(search)
+    console.log(search ,'searchh')
     let employees = await Employee.find({
         $or: [
           { username: new RegExp(search, "i")},
@@ -89,14 +89,14 @@ const getCustomersCount = async (req, res) => {
         let agentsNames = [];
 
         for (const item of result) {
-            console.log(item.count);
+        //    console.log(item.count);
 
             let agentsingle = await Employee.findById(item._id).select('fullName');
 
             agentsNames.push({ data: agentsingle, count: item.count });
         }
 
-        console.log('array', agentsNames);
+      //  console.log('array', agentsNames);
 
         if (!result || result.length === 0) {
             res.status(404).json({ message: 'error' });
@@ -110,7 +110,7 @@ const getCustomersCount = async (req, res) => {
             totalCustomers
         });
     } catch (err) {
-        console.log(err);
+     //   console.log(err);
         if (err instanceof TypeError) {
             res.status(400).json(err);
             return;
