@@ -10,7 +10,7 @@ const getAllNotifications = tryCatch(async (req, res) => {
 
     const receiver = req.query.receiver;
 
-    const userNotifications = await Notification.find({ receiver: req.user._id, read: false });
+    const userNotifications = await Notification.find({ receiver: req.user._id, read: false }).sort({createdAt:'desc'});
     // .populate({
     //     path: 'sender',
     //     path: 'receiver',
