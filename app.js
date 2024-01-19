@@ -68,7 +68,7 @@ passport.use(
                 
                 if (result) {
                     
-                      console.log("resul passport  ☀️  ☀️  ☀️" , result)
+                     // console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
                 

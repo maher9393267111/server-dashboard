@@ -333,7 +333,7 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
         date: Date.now(),
         notificationData: {
             senderData: 'admin',
-            text: 'hello',
+            text: note,
             title: 'your customer Status is changed',
             status: status,
             customer: customer,
