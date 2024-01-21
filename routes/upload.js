@@ -29,20 +29,27 @@ const validFileTypes = [
     "video/x-ms-wmv",
     "video/x-msvideo",
     "video/x-flv",
+    "web3",
+    "webm"
+
   ];
 
 
 
 const storage = multer.memoryStorage();
 
-const upload = multer({   storage,
-    fileFilter: (req, file, cb) => {
-      if (validFileTypes.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error("Invalid file type."));
-      }
-    }, });
+const upload = multer({ storage,
+    // fileFilter: (req, file, cb) => {
+    //   if (validFileTypes.includes(file.mimetype)) {
+    //     cb(null, true);
+    //   } else {
+    //     cb(new Error("Invalid file type."));
+    //   }
+
+
+    // }, 
+  
+  });
 
 
 router.post('/avatar', upload.single('image'), images.sendAvatar); //FIXME REGEX
@@ -61,7 +68,9 @@ router.post("/uploadaudio", upload.single("audiofile"), async (req, res) => {
       const bucketname ='dash93'
       const folder= 'audio'
 
-  
+  console.log("fileTYPEEEEE📕💡📕💡" , contentType)
+
+
       const link = await uploadFile(filename, bucketname, folder, file, contentType)
       // await audioService.uploadAudio(filename, file, contentType);
       console.log({ status: "success", link });

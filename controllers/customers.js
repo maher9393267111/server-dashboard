@@ -144,10 +144,18 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     const totalDocs = await Customer.countDocuments(filter);
     const totalPages = Math.ceil(totalDocs / pageSize);
     if (pageNum === 1) {
-        customers = await Customer.find(filter).sort(sort).limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).limit(pageSize).populate({
+            path: 'employe_id',
+            select: 'fullName username '
+           
+        });
     } else {
         const skips = pageSize * (pageNum - 1);
-        customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize);
+        customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize).populate({
+            path: 'employe_id',
+            select: 'fullName username '
+           
+        });
     }
 
     const io = req.app.get('socketio');
@@ -192,6 +200,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             email: searchtype === 'ssn' ? 'anemous@gmail.com' : `${req.params.name}@gmail.com`,
             employe_id: user._id,
             ssn: searchtype === 'ssn' ? name : 0,
+            SearchedBy: searchtype === 'ssn'? "ssn" : 'name'
         };
 
         const customernew = new Customer(data);
@@ -301,7 +310,7 @@ const deleteCustomer = tryCatch(async (req, res) => {
 // ----update customer status by admin---
 
 const updateCustomerStatus = tryCatch(async (req, res) => {
-    const { status, note, agentId } = req.body;
+    const { status, note, agentId ,process } = req.body;
 
     console.log('Body', req.body);
 
@@ -318,8 +327,10 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     // else {
     const data = {
         status: status,
+        process:process
     };
 
+    
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
 
     const customerAgent = await Employee.findById(agentId);

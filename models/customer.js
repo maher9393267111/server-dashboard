@@ -26,6 +26,8 @@ const customerSchema = new Schema(
     work:{type:String},
     signature:{type:String},
     date: { type: Date, default: Date.now },
+    SearchedBy: {type:String ,default:"created"}, 
+    process:{type:Boolean},
     
   employe_id: {
     type: mongoose.Schema.Types.ObjectId,
