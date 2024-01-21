@@ -327,10 +327,11 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     // else {
     const data = {
         status: status,
-        process:process
+        process:process,
+        note:note
     };
 
-    
+
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
 
     const customerAgent = await Employee.findById(agentId);
