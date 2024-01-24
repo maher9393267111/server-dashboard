@@ -1,4 +1,5 @@
 const multer = require('multer');
+const { randomBytes } = require("crypto");
 // const AWS = require("aws-sdk");
 
 // prepare S3 client
@@ -27,8 +28,17 @@ const s3_v3 = new S3Client({
     },
 });
 
+
+function generateRandomHash() {
+    const rawBytes = randomBytes(16);
+    const hash = rawBytes.toString("hex");
+    return hash;
+  }
+
+
 const uploadFile = async (filename, bucketname, folder, file, contentType) => {
-    const key = folder ? `${folder}/${filename}` : filename;
+    const key = folder ? `${folder}/${ generateRandomHash()}` :  generateRandomHash() ;
+
 
     const params = {
         Key: key,
