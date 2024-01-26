@@ -51,7 +51,8 @@ const uploadFile = async (filename, bucketname, folder, file, contentType) => {
     try {
         const command = new PutObjectCommand(params);
         await s3_v3.send(command);
-        const url = `${cdnEndpoint}/${encodeURIComponent(key)}`;
+        // encodeURIComponent //  `${cdnEndpoint}/${encodeURIComponent(key)}`;
+        const url = `${cdnEndpoint}/${key}`;
         return url;
     } catch (err) {
         throw err;

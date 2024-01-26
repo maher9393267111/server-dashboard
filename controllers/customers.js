@@ -200,7 +200,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             email: searchtype === 'ssn' ? 'anemous@gmail.com' : `${req.params.name}@gmail.com`,
             employe_id: user._id,
             ssn: searchtype === 'ssn' ? name : 0,
-            SearchedBy: searchtype === 'ssn'? "ssn" : 'name'
+            SearchedBy: name
         };
 
         const customernew = new Customer(data);
@@ -246,6 +246,8 @@ const createCustomer = tryCatch(async (req, res) => {
 
     //data.employe_id = parseInt(data.employe_id)
     // console.log('DATA', data);
+
+    data.SearchedBy = data?.ssn
 
     const customer = new Customer(data);
     await customer.save();
