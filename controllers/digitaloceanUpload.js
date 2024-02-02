@@ -19,20 +19,27 @@ const { isNullOrUndefined } = require('util');
 // const accessKeyId = 'DO00M9XA6DJ9P9Y4UWFT';
 // const secretAccessKey = 'fcWJxA4nn0r5yNKUi1011UzQ66FPMO6Lt8UEuGWSypE';
 
+//const endpoint = 'https://nyc3.digitaloceanspaces.com';
+//const cdnEndpoint = 'https://dash93.nyc3.cdn.digitaloceanspaces.com';
+
+
 
 
 const bucketName = 'acabucket';
 const accessKeyId = 'DO00XPGN8Q86MN438NN3';
 const secretAccessKey = 'VNM2xYl0Yu4o/BLeJWq/r26hgH0omZQ08z7ROlVZizc';
 
-
-
-
-
-
-
 const endpoint = 'https://nyc3.digitaloceanspaces.com';
-const cdnEndpoint = 'https://dash93.nyc3.cdn.digitaloceanspaces.com';
+const cdnEndpoint = 'https://acabucket.nyc3.digitaloceanspaces.com';
+
+
+
+
+
+
+
+
+
 
 const s3Client = new S3Client({
     endpoint: endpoint,
