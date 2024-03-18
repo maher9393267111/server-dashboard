@@ -99,7 +99,7 @@ const server = app.listen(port, () => {
 const io = new Server(server, {
     cors: {
          origin: true,
-         Credential: true,
+         Credentials: true,
          methods: ["GET", "POST"],
         // origin: '*',
         // credentials: true
