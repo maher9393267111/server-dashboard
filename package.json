@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "starts": "node ./bin/www",
+    "starts": "node ./app.js",
     "start": "node ./app.js",
-    "start:production": "pm2 start ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "watch": "supervisor ./bin/www",
+    "start:production": "pm2 start ./app.js",
+    "dev": "nodemon ./app.js",
+    "watch": "supervisor ./app.js",
     "watch-app": "supervisor ./app.js"
   },
   "dependencies": {
