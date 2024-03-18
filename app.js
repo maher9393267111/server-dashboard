@@ -96,16 +96,28 @@ const port = process.env.PORT || '3300';
 const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-const io = new Server(server, {
+
+
+const io = require('socket.io')(server, {
     cors: {
-         origin: true,
-         Credentials: true,
-         methods: ["GET", "POST"],
-        // origin: '*',
-        // credentials: true
-        
+      origin: '*',
+      methods: ['GET', 'POST'],
     },
-});
+  });
+  
+
+
+
+// const io = new Server(server, {
+//     cors: {
+//          origin: true,
+//          Credentials: true,
+//          methods: ["GET", "POST"],
+        
+        
+//     },
+// });
+
 
 //app.set('socketio', io);
 
