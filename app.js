@@ -109,6 +109,18 @@ const io = new Server(server, {
 
 app.set('socketio', io);
 
+
+io.on("connection", (socket) => {
+    // console.log("A user connected!");
+ 
+    socket.emit('start', 'START');
+
+
+
+  });
+
+
+
 io.on('connect_failed', function (err) {
     console.log('Connection Failed', err);
 });
