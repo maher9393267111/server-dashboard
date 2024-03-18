@@ -12,7 +12,7 @@ const passport = require('passport');
 
 const { Server } = require('socket.io');
 const { socketOrder } = require('./helpers/socket');
-const Employee = require('./models/employee')
+const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -22,12 +22,12 @@ const loginRoute = require('./routes/login');
 const customersRoute = require('./routes/customers');
 const employeesRoute = require('./routes/employees');
 
-const notificationsRoute = require('./routes/notifications')
+const notificationsRoute = require('./routes/notifications');
 
 dotenv.config({ path: '.env' });
 mongoose.connect(
     //'mongodb+srv://maher:maher9326@cluster0.nf63j.mongodb.net/theme?retryWrites=true&w=majority',
-    "mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority",
+    'mongodb+srv://hamad:hamadhamad@acaserverlessinstance.lxbny28.mongodb.net/first?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
         if (err) {
@@ -54,24 +54,17 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = jwtSettings.SECRET;
 
-
-
-
-
 passport.use(
     new JwtStrategy(opts, (payload, done) => {
         const _id = payload.id;
-       
-      //  findDocument
+
+        //  findDocument
         Employee.findById(_id)
             .then((result) => {
-                
                 if (result) {
-                    
-                     // console.log("resul passport  ☀️  ☀️  ☀️" , result)
+                    // console.log("resul passport  ☀️  ☀️  ☀️" , result)
                     return done(null, result);
                 } else {
-                
                     return done(null, false);
                 }
             })
@@ -81,8 +74,6 @@ passport.use(
     }),
 );
 //END
-
-
 
 //ROUTES
 app.use('/upload', uploadRoute);
@@ -107,53 +98,34 @@ const server = app.listen(port, () => {
 });
 const io = new Server(server, {
     cors: {
-         origin: true,
-        Credential: true,
-        // origin: 'http://localhost:3000',
-        // methods: ['GET', 'POST'],
+        // origin: true,
+        // Credential: true,
+        origin: '*',
+        credentials: false
+        
     },
 });
 
-
 app.set('socketio', io);
 
-io.on('connect_failed', function(err){
-    console.log('Connection Failed' ,err);
+io.on('connect_failed', function (err) {
+    console.log('Connection Failed', err);
 });
 
-
-io.on("connect_error", (err) => {
+io.on('connect_error', (err) => {
     console.log(`connect_error due to ${err.message}`);
-  });
-
-
+});
 
 // app.use(passport.initialize());
 //   app.use(passport.session());
 
-
 // Authenticate before establishing a socket connection
-
-  
-
-
-
-
-
-
-
-
-
 
 // app.use(function (req, res, next) {
 //     req.io = io;
 //     next();
 //   });
 
-
-
 //socketOrder(io);
 
 module.exports = app;
-
-
