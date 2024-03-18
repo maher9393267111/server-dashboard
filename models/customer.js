@@ -13,6 +13,7 @@ const customerSchema = new Schema(
     birthday: Date,
     status :{type:String ,required :true , default:"pending"},
    
+    
     file: { link:String , filename:String },
  audio:String,
     files:{type:Array},

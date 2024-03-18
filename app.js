@@ -100,7 +100,7 @@ app.get('/', (req, res) =>
     }),
 );
 
-const port = process.env.PORT || '8000';
+const port = process.env.PORT || '3300';
 
 const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
@@ -116,6 +116,18 @@ const io = new Server(server, {
 
 
 app.set('socketio', io);
+
+io.on('connect_failed', function(err){
+    console.log('Connection Failed' ,err);
+});
+
+
+io.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+
+
+
 // app.use(passport.initialize());
 //   app.use(passport.session());
 
