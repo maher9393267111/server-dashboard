@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 const { Server } = require('socket.io');
-const { socketOrder } = require('./helpers/socket');
+//const { socketOrder } = require('./helpers/socket');
 const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -111,7 +111,7 @@ app.set('socketio', io);
 
 
 io.on("connection", (socket) => {
-    // console.log("A user connected!");
+     console.log("🟨🟨🟨🟨🟨🟨🟨🟨🟨");
  
     socket.emit('start', 'START');
 
