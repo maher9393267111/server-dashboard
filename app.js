@@ -98,10 +98,10 @@ const server = app.listen(port, () => {
 });
 const io = new Server(server, {
     cors: {
-        // origin: true,
-        // Credential: true,
-        origin: '*',
-        credentials: true
+         origin: true,
+         Credential: true,
+        // origin: '*',
+        // credentials: true
         
     },
 });
