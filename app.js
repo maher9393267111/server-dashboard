@@ -101,7 +101,7 @@ const io = new Server(server, {
         // origin: true,
         // Credential: true,
         origin: '*',
-        credentials: false
+        credentials: true
         
     },
 });
