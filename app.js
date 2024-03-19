@@ -123,7 +123,8 @@ const io = require('socket.io')(server, {
 
 
 io.on("connection", (socket) => {
-     console.log("🟨🟨🟨🟨🟨🟨🟨🟨🟨");
+    
+
  
     socket.emit('start', 'START');
 
@@ -133,13 +134,18 @@ io.on("connection", (socket) => {
 
 
 
-io.on('connect_failed', function (err) {
-    console.log('Connection Failed', err);
-});
+  io.on("connect_error", (err) => {
+    // the reason of the error, for example "xhr poll error"
+    console.log(err.message);
+  
+    // some additional description, for example the status code of the initial HTTP response
+    console.log(err.description);
+  
+    // some additional context, for example the XMLHttpRequest object
+    console.log(err.context);
+  });
 
-io.on('connect_error', (err) => {
-    console.log(`connect_error due to ${err.message}`);
-});
+
 
 // app.use(passport.initialize());
 //   app.use(passport.session());
