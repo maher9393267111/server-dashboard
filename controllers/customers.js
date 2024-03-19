@@ -39,6 +39,8 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     const sortBy = !req.query.sortBy ? '_id' : req.query.sortBy;
 
     console.log('sortBy 🌙🌙🌙', sortBy);
+    
+   
 
     const sort = {};
 
@@ -64,8 +66,9 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     }
 
     console.log('customer___>>>', customers);
-    const io = req.app.get('socketio');
-    io.sockets.emit('fetch', 'added new customer');
+    const io = req.app.get('socket');
+    io.emit('fetch', 'added new customer');
+    //io.emit('search', 'from customer');
    
 
     res.status(200).json({ customers: customers, count: totalDocs });
@@ -158,8 +161,8 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         });
     }
 
-    const io = req.app.get('socketio');
-    io.sockets.emit('fetch', 'added new customer');
+    const io = req.app.get('socket');
+    io.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
     res.status(200).json({ customers: customers, count: totalDocs });
@@ -231,14 +234,13 @@ const getCustomerByName = tryCatch(async (req, res) => {
 
         await notification.save();
 
-        const io = req.app.get('socketio');
+        //const io = req.app.get('socketio');
+      
 
-    //   //  ظظio.on('connection', (socket) => {
-    //         socket.emit('search_customer', notification)
-    // //   })
+        const io = req.app.get('socket');
+        io.emit('search_customer', notification);
 
 
-       io.emit('search_customer', notification);
 
         await customernew.save();
 
@@ -287,9 +289,10 @@ const createCustomer = tryCatch(async (req, res) => {
 
     await notification.save();
 
-    const io = req.app.get('socketio');
-       io.sockets.emit('fetch', 'added new customer');
-    io.sockets.emit('createcustomer', notification);
+    const io = req.app.get('socket');
+    //   io.sockets.emit('fetch', 'added new customer');
+    io.emit('createcustomer', notification);
+
 
     //   socketHandler.sendNotification(req, {
     //     ...notification.toObject(),
@@ -368,8 +371,8 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     await notification.save();
 
    
-    const io = req.app.get('socketio');
-    io.sockets.emit('status', notification);
+    const io = req.app.get('socket');
+    io.emit('status', notification);
   
 
     res.status(200).json({ message: 'Customer status is accepted', customer });
