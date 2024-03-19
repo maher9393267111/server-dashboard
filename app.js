@@ -113,7 +113,7 @@ const io = new Server(server, {
     },
 });
 
-//app.set('socketio', io);
+app.set('socketio', io);
 
 io.on('connection', (socket) => {
     socket.emit('start', 'START');
