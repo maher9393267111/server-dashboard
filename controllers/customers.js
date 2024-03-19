@@ -147,7 +147,7 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         });
     }
 
-    const io = getIO(); //req.app.get('socket');
+      const io = socketio.url   //getIO(); //req.app.get('socket');
     io.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
