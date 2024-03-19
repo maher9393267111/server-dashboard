@@ -110,17 +110,21 @@ const io = new Server(server, {
         Credentials: true,
         methods: ['GET', 'POST'],
     },
+
+    transports: ['polling', 'websocket'],
+	allowEIO3: true
+
 });
 
 
 
-//app.set('socketio', io);
+app.set('socketio', io);
 //socketOrder(io);
 
 io.on('connection', (socket) => {
     //let io = socket
     socket.emit('start', 'START');
-    app.set('socketio', io);
+   // app.set('socketio', io);
 });
 
 
