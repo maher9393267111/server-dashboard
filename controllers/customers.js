@@ -4,6 +4,8 @@ const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
 const socketHandler = require('../helpers/socket');
+const { Search } = require('../helpers/socket');
+const { getIO } = require('../helpers/ScocketFunctions/index');
 
 const getAllCustomers = tryCatch(async (req, res) => {
     console.log('AUTH JWT DATA--->', req.user);
@@ -39,8 +41,6 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     const sortBy = !req.query.sortBy ? '_id' : req.query.sortBy;
 
     console.log('sortBy 🌙🌙🌙', sortBy);
-    
-   
 
     const sort = {};
 
@@ -66,10 +66,8 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     }
 
     console.log('customer___>>>', customers);
-    const io = req.app.get('socket');
-    io.emit('fetch', 'added new customer');
-    //io.emit('search', 'from customer');
-   
+    const io = getIO(); //req.app.get('socket');
+    io.emit('start', 'added new customer');
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
@@ -77,7 +75,7 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
 // admin show all customers
 
 const getAllCustomersPagination = tryCatch(async (req, res) => {
-    const { page, size ,employeid } = req.query;
+    const { page, size, employeid } = req.query;
     console.log(page, size);
     const pageNum = Number(page);
     const pageSize = Number(size);
@@ -99,26 +97,16 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     } else if (req.query.status === 'admincustomers') {
         filter.employe_id = req.user._id;
     }
- 
 
-    console.log("EMPLOY🌐🌐🌐🌐🌐🌐EID" , filter)
+    console.log('EMPLOY🌐🌐🌐🌐🌐🌐EID', filter);
 
-
-//&& req.query.status
-     if (employeid !== 'undefined'    ) {
-        console.log("SSSSSSSSSSSSSSSSSTTT" ,req.query.status)
+    //&& req.query.status
+    if (employeid !== 'undefined') {
+        console.log('SSSSSSSSSSSSSSSSSTTT', req.query.status);
         filter.employe_id = employeid;
     }
 
-
-    console.log("FILTER 🔸️🔷️🔶️🔸️🔷️🔶️" ,filter)
-   
-
-
-
-
-
-
+    console.log('FILTER 🔸️🔷️🔶️🔸️🔷️🔶️', filter);
 
     console.log('req.user', req.user._id, 'query admin owner', filter);
 
@@ -149,19 +137,17 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
     if (pageNum === 1) {
         customers = await Customer.find(filter).sort(sort).limit(pageSize).populate({
             path: 'employe_id',
-            select: 'fullName username '
-           
+            select: 'fullName username ',
         });
     } else {
         const skips = pageSize * (pageNum - 1);
         customers = await Customer.find(filter).sort(sort).skip(skips).limit(pageSize).populate({
             path: 'employe_id',
-            select: 'fullName username '
-           
+            select: 'fullName username ',
         });
     }
 
-    const io = req.app.get('socket');
+    const io = getIO(); //req.app.get('socket');
     io.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
@@ -203,7 +189,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
             email: searchtype === 'ssn' ? 'anemous@gmail.com' : `${req.params.name}@gmail.com`,
             employe_id: user._id,
             ssn: searchtype === 'ssn' ? name : 0,
-            SearchedBy: name
+            SearchedBy: name,
         };
 
         const customernew = new Customer(data);
@@ -211,8 +197,8 @@ const getCustomerByName = tryCatch(async (req, res) => {
         // notifay admin with socketio
 
         const customerAgent = await Employee.findById(req.user._id);
-        const admin = await Employee.findOne({ roles:"admin" })
-        
+        const admin = await Employee.findOne({ roles: 'admin' });
+
         //.byRole('admin');
 
         const notification = new Notification({
@@ -224,23 +210,21 @@ const getCustomerByName = tryCatch(async (req, res) => {
                 senderData: req.user.username,
                 text: 'hello',
                 title: 'Search Customer',
-                customer: "new customer created by seach",
-                searchType:searchtype,
+                customer: 'new customer created by seach',
+                searchType: searchtype,
 
                 myRole: req.user?.roles,
             },
         });
 
-
         await notification.save();
 
         //const io = req.app.get('socketio');
-      
 
-        const io = req.app.get('socket');
+        const io = getIO(); //req.app.get('socket');
         io.emit('search_customer', notification);
 
-
+        // await Search("notifications")
 
         await customernew.save();
 
@@ -256,7 +240,7 @@ const createCustomer = tryCatch(async (req, res) => {
     //data.employe_id = parseInt(data.employe_id)
     // console.log('DATA', data);
 
-    data.SearchedBy = data?.ssn
+    data.SearchedBy = data?.ssn;
 
     const customer = new Customer(data);
     await customer.save();
@@ -265,7 +249,7 @@ const createCustomer = tryCatch(async (req, res) => {
 
     //1-find admin id
 
-    const admin = await Employee.findOne({roles:'admin'})
+    const admin = await Employee.findOne({ roles: 'admin' });
     //.byRole('admin');
     //const sender = await Employee.findById(req.body.employe_id)
     //admin _id 6598038926ffd999a2d66d85
@@ -280,8 +264,8 @@ const createCustomer = tryCatch(async (req, res) => {
             senderData: req.user.username,
             text: 'hello',
             title: 'Add Customer',
-            customer: "new customer created by Form",
-            searchType:"add_customer",
+            customer: 'new customer created by Form',
+            searchType: 'add_customer',
 
             myRole: req.user?.roles,
         },
@@ -289,10 +273,9 @@ const createCustomer = tryCatch(async (req, res) => {
 
     await notification.save();
 
-    const io = req.app.get('socket');
+    const io = getIO(); //req.app.get('socket');
     //   io.sockets.emit('fetch', 'added new customer');
     io.emit('createcustomer', notification);
-
 
     //   socketHandler.sendNotification(req, {
     //     ...notification.toObject(),
@@ -322,7 +305,7 @@ const deleteCustomer = tryCatch(async (req, res) => {
 // ----update customer status by admin---
 
 const updateCustomerStatus = tryCatch(async (req, res) => {
-    const { status, note, agentId ,process } = req.body;
+    const { status, note, agentId, process } = req.body;
 
     console.log('Body', req.body);
 
@@ -339,15 +322,14 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     // else {
     const data = {
         status: status,
-        process:process,
-        note:note
+        process: process,
+        note: note,
     };
-
 
     const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
 
     const customerAgent = await Employee.findById(agentId);
-    const admin = await Employee.findOne({roles:'admin'})
+    const admin = await Employee.findOne({ roles: 'admin' });
     //.byRole('admin');
 
     const notification = new Notification({
@@ -370,10 +352,8 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
 
     await notification.save();
 
-   
-    const io = req.app.get('socket');
+    const io = getIO(); //req.app.get('socket');
     io.emit('status', notification);
-  
 
     res.status(200).json({ message: 'Customer status is accepted', customer });
 

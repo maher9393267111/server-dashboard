@@ -12,6 +12,7 @@ const passport = require('passport');
 
 const { Server } = require('socket.io');
 const { socketOrder } = require('./helpers/socket');
+const { initializeSocketIO } = require('./helpers/ScocketFunctions/index');
 const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -97,38 +98,54 @@ const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
 
-// const io = require('socket.io')(server, {
+
+
+initializeSocketIO(server);
+
+// const io = new Server(server, {
 //     cors: {
 //         origin: '*',
+//         Credentials: true,
 //         methods: ['GET', 'POST'],
 //     },
+
+//     transports: ['polling', 'websocket'],
+// 	allowEIO3: true
+
 // });
 
-const io = new Server(server, {
-    cors: {
-        origin: '*',
-        Credentials: true,
-        methods: ['GET', 'POST'],
-    },
 
-    transports: ['polling', 'websocket'],
-	allowEIO3: true
 
-});
+// io.on('connection', (socket) => {
+//     //let io = socket
+//     socket.emit('start', 'START');
+
+//     app.set('socket', socket);
+//     socketOrder(socket);
+
+
+ 
+// });
+
 
 
 
 //app.set('socketio', io);
 //socketOrder(io);
 
-io.on('connection', (socket) => {
-    //let io = socket
-    socket.emit('start', 'START');
 
-    app.set('socket', socket);
- 
-});
 
+
+
+
+
+
+
+
+// app.use(function (req, res, next) {
+//     req.socket = io;
+//     next();
+//   });
 
 
 

@@ -1,14 +1,23 @@
-function socketOrder(io) {
-    io.on('connection', (socket) => {
+
+
+function socketOrder(socket) {
+    
         socket.emit('order', 'order');
-
-        socket.on('signal', require('./ScocketFunctions/Search')(io, socket));
-
-
-
-
+        socket.emit('search_customer' ,Search())
         
-    });
+
+
+
+
 }
 
-module.exports = { socketOrder };
+function Search (data) {
+  
+
+}
+
+
+
+
+
+module.exports = { socketOrder ,Search };
