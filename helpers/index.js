@@ -31,6 +31,7 @@ function init(httpServer) {
 
 
 
+
         
        socket.on('create_cust', (data) => {
         console.log("SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
@@ -39,7 +40,14 @@ function init(httpServer) {
     });
 
 
-    
+    //io.emit('status', notification);
+
+    socket.on('status-cust', (data) => {
+        console.log("STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
+        
+        io.emit('status', {...data ,message:" Customer Status changed"});
+    });
+
 
 
 
