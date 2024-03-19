@@ -15,6 +15,8 @@ const customerSchema = new Schema(
    
     
     file: { link:String , filename:String },
+     
+    userimage: { link:String , filename:String },
  audio:String,
     files:{type:Array},
     birthday: {type:String},

@@ -12,26 +12,14 @@ const {
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { isNullOrUndefined } = require('util');
 
-// prepare S3 client
- const region = 'us-east-1';
-// const bucketName = 'dash93';
-
-// const accessKeyId = 'DO00M9XA6DJ9P9Y4UWFT';
-// const secretAccessKey = 'fcWJxA4nn0r5yNKUi1011UzQ66FPMO6Lt8UEuGWSypE';
-
-//const endpoint = 'https://nyc3.digitaloceanspaces.com';
-//const cdnEndpoint = 'https://dash93.nyc3.cdn.digitaloceanspaces.com';
-
-
-
-
 const bucketName = 'acabucket';
+const region = 'us-east-1';
 const accessKeyId = 'DO00XPGN8Q86MN438NN3';
 const secretAccessKey = 'VNM2xYl0Yu4o/BLeJWq/r26hgH0omZQ08z7ROlVZizc';
 
+
 const endpoint = 'https://nyc3.digitaloceanspaces.com';
 const cdnEndpoint = 'https://acabucket.nyc3.digitaloceanspaces.com';
-
 
 
 
@@ -52,8 +40,8 @@ const s3Client = new S3Client({
 
 exports.sendAvatar = async (req, res) => {
     try {
-        const files = req.file;
-        console.log('file', files);
+        const file = req.file;
+        console.log('file', file);
 
       //  res.status(201).json({ meeeage: 'hello' });
 
@@ -85,7 +73,7 @@ exports.sendAvatar = async (req, res) => {
         };
 
         var result = await s3Client.send(new PutObjectCommand(params));
-        return res.status(201).json({ filename: fileName, link: `${cdnEndpoint}/${fileName}` });
+        return res.status(201).json({ filename: fileName,  link: `${cdnEndpoint}/hamad/${fileName}` });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: err });
@@ -100,7 +88,7 @@ exports.DeleteImage = async (req, res) => {
         console.log('fileName🧱⬇️↖️🔝🔙⚛🕎🧱⬇️↖️🔝🔙⚛🕎🧱⬇️↖️🔝🔙⚛🕎', filename ,'fo;der' ,folder);
         await s3Client.send(
             new DeleteObjectCommand({
-                Bucket: 'dash93',
+                Bucket: bucketName,
                 Key: `${folder === null ? 'hamad' : folder}/${filename}`,
             }),
         );
