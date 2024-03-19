@@ -97,55 +97,34 @@ const server = app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
 
-
-const io = require('socket.io')(server, {
-    cors: {
-      origin: '*',
-      methods: ['GET', 'POST'],
-    },
-  });
-  
-
-
-
-// const io = new Server(server, {
+// const io = require('socket.io')(server, {
 //     cors: {
-//          origin: true,
-//          Credentials: true,
-//          methods: ["GET", "POST"],
-        
-        
+//         origin: '*',
+//         methods: ['GET', 'POST'],
 //     },
 // });
 
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+         Credentials: true,
+         methods: ["GET", "POST"],
+
+    },
+});
 
 //app.set('socketio', io);
 
-
-io.on("connection", (socket) => {
-    
-
- 
+io.on('connection', (socket) => {
     socket.emit('start', 'START');
+});
 
-
-
-  });
-
-
-
-  io.on("connect_error", (err) => {
-    // the reason of the error, for example "xhr poll error"
-    console.log(err.message);
-  
-    // some additional description, for example the status code of the initial HTTP response
-    console.log(err.description);
-  
-    // some additional context, for example the XMLHttpRequest object
-    console.log(err.context);
-  });
-
-
+io.engine.on('connection_error', (err) => {
+    console.log(err.req); // the request object
+    console.log(err.code); // the error code, for example 1
+    console.log(err.message); // the error message, for example "Session ID unknown"
+    console.log(err.context); // some additional error context
+});
 
 // app.use(passport.initialize());
 //   app.use(passport.session());
