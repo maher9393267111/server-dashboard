@@ -3,6 +3,7 @@ const { Server } = require('socket.io');
 require('dotenv').config();
 
 let io;
+let socketio ={url:null} ;
 
 function init(httpServer) {
     io = new Server(httpServer, {
@@ -19,7 +20,7 @@ function init(httpServer) {
     io.on('connection', (socket) => {
         console.log(`New connection: ${socket.id}`);
         
- 
+ socketio.url = socket
 
         // Handle disconnection
         socket.on('disconnect', () => {
@@ -37,4 +38,4 @@ function getIO() {
     return io;
 }
 
-module.exports = { init, getIO };
+module.exports = { init, getIO  ,socketio };

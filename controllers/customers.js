@@ -3,7 +3,7 @@ const Notification = require('../models/notification');
 const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
-const {getIO} = require('../helpers/index');
+const {getIO ,socketio} = require('../helpers/index');
 //const { io } = require('../app');
 
 
@@ -66,7 +66,7 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     }
 
     console.log('customer___>>>', customers);
-    const io = getIO(); //req.app.get('socket');
+    const io = socketio.url  // getIO(); //req.app.get('socket');
     io.emit('start', 'added new customer');
 
     res.status(200).json({ customers: customers, count: totalDocs });
