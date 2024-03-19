@@ -10,7 +10,9 @@ function init(httpServer) {
             origin:"*",
             // origin:"https://www.job-peer.com",
             methods: ["GET", "POST", "PUT", "DELETE"],
-            credentials: true
+            credentials: true,
+            transports: ['polling', 'websocket'],
+            // 	allowEIO3: true
         }
     });
 
