@@ -362,7 +362,13 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
     await notification.save();
 
     const io = req.app.get('socketio');
-    io.sockets.emit('status', notification);
+    io.sockets.emit('status', notification)
+    // .then(()=>{
+    //     console.log("Status changed from socket io 🚧🚧🚧")
+    // })
+    // .catch((err)=>{
+    //     console.log("ERROR in 🚧🚧🚧🚧 SOCKETIO", err?.message)
+    // });
 
     res.status(200).json({ message: 'Customer status is accepted', customer });
 

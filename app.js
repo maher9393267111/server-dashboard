@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 const { Server } = require('socket.io');
-//const { socketOrder } = require('./helpers/socket');
+const { socketOrder } = require('./helpers/socket');
 const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -107,35 +107,31 @@ const server = app.listen(port, () => {
 const io = new Server(server, {
     cors: {
         origin: '*',
-         Credentials: true,
-         methods: ["GET", "POST"],
-
+        Credentials: true,
+        methods: ['GET', 'POST'],
     },
 });
 
 app.set('socketio', io);
+socketOrder(io);
 
-io.on('connection', (socket) => {
-    socket.emit('start', 'START');
-});
-
-io.engine.on('connection_error', (err) => {
-    console.log(err.req); // the request object
-    console.log(err.code); // the error code, for example 1
-    console.log(err.message); // the error message, for example "Session ID unknown"
-    console.log(err.context); // some additional error context
-});
-
-
-io.use((socket, next) => {
-    next();
-  });
-  
- 
+// io.on('connection', (socket) => {
+//     socket.emit('start', 'START');
+// });
 
 
 
 
+// io.engine.on('connection_error', (err) => {
+//     console.log(err.req); // the request object
+//     console.log(err.code); // the error code, for example 1
+//     console.log(err.message); // the error message, for example "Session ID unknown"
+//     console.log(err.context); // some additional error context
+// });
+
+// io.use((socket, next) => {
+//     next();
+//   });
 
 // app.use(passport.initialize());
 //   app.use(passport.session());
@@ -146,7 +142,5 @@ io.use((socket, next) => {
 //     req.io = io;
 //     next();
 //   });
-
-//socketOrder(io);
 
 module.exports = app;
