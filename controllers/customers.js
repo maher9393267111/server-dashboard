@@ -3,7 +3,7 @@ const Notification = require('../models/notification');
 const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
-const {getIO ,socketio} = require('../helpers/index');
+const {socketio} = require('../helpers/index');
 //const { io } = require('../app');
 
 

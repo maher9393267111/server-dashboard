@@ -2,7 +2,7 @@ const { Server } = require('socket.io');
 
 require('dotenv').config();
 
-let io;
+//let io;
 let socketio ={url:null} ;
 
 function init(httpServer) {
@@ -25,29 +25,27 @@ function init(httpServer) {
 
        socket.on('search', (data) => {
             console.log("SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
-            socket.emit('search_customer', data);
-            socket.emit('search_server', "search work good");
+            io.emit('search_cust', data);
+            io.emit('search_server', {...data ,message:"search from server with data"});
         });
 
 
 
 
- socketio.url = socket
 
-        // Handle disconnection
-        socket.on('disconnect', () => {
-            console.log('User disconnected', socket.id);
-        });
+
+        
+    
     });
 
     return io;
 }
 
-function getIO() {
-    if (!io) {
-        throw new Error("Must initialize socket.io first");
-    }
-    return io;
-}
+// function getIO() {
+//     if (!io) {
+//         throw new Error("Must initialize socket.io first");
+//     }
+//     return io;
+// }
 
-module.exports = { init, getIO  ,socketio };
+module.exports = { init  ,socketio };
