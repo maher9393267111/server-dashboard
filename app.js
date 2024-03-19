@@ -126,6 +126,17 @@ io.engine.on('connection_error', (err) => {
     console.log(err.context); // some additional error context
 });
 
+
+io.use((socket, next) => {
+    next();
+  });
+  
+ 
+
+
+
+
+
 // app.use(passport.initialize());
 //   app.use(passport.session());
 
