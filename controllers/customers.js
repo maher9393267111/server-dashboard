@@ -66,8 +66,8 @@ const getAllAgentCustomers = tryCatch(async (req, res) => {
     }
 
     console.log('customer___>>>', customers);
-    const io = socketio.url  // getIO(); //req.app.get('socket');
-    io.emit('start', 'added new customer');
+    //const io = socketio.url  // getIO(); //req.app.get('socket');
+  //  io.emit('start', 'added new customer');
 
     res.status(200).json({ customers: customers, count: totalDocs });
 });
@@ -147,8 +147,8 @@ const getAllCustomersPagination = tryCatch(async (req, res) => {
         });
     }
 
-      const io = socketio.url   //getIO(); //req.app.get('socket');
-    io.emit('fetch', 'added new customer');
+     // const io = socketio.url   //getIO(); //req.app.get('socket');
+   // io.emit('fetch', 'added new customer');
     //    io.sockets.in(receiver).emit('newPost', post);
 
     res.status(200).json({ customers: customers, count: totalDocs });
@@ -222,13 +222,13 @@ const getCustomerByName = tryCatch(async (req, res) => {
         //const io = req.app.get('socketio');
 
         //const io =  //req.app.get('socket');
-        io.emit('search_customer', notification);
+        //io.emit('search_customer', notification);
 
         
 
         await customernew.save();
 
-        res.status(200).json({ message: false, customernew });
+        res.status(200).json({ message: false, customernew ,notification:notification });
     } else {
         res.status(200).json({ message: true });
     }
@@ -273,9 +273,9 @@ const createCustomer = tryCatch(async (req, res) => {
 
     await notification.save();
 
-    const io = getIO(); //req.app.get('socket');
+  //  const io = getIO(); //req.app.get('socket');
     //   io.sockets.emit('fetch', 'added new customer');
-    io.emit('createcustomer', notification);
+   // io.emit('createcustomer', notification);
 
     //   socketHandler.sendNotification(req, {
     //     ...notification.toObject(),
@@ -352,8 +352,8 @@ const updateCustomerStatus = tryCatch(async (req, res) => {
 
     await notification.save();
 
-    const io = getIO(); //req.app.get('socket');
-    io.emit('status', notification);
+   // const io = getIO(); //req.app.get('socket');
+   // io.emit('status', notification);
 
     res.status(200).json({ message: 'Customer status is accepted', customer });
 

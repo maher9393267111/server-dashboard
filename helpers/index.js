@@ -20,6 +20,18 @@ function init(httpServer) {
     io.on('connection', (socket) => {
         console.log(`New connection: ${socket.id}`);
         
+
+        socket.emit('start',"start")
+
+       socket.on('search', (data) => {
+            console.log("SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
+            socket.emit('search_customer', data);
+            socket.emit('search_server', "search work good");
+        });
+
+
+
+
  socketio.url = socket
 
         // Handle disconnection
