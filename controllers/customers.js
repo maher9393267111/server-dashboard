@@ -238,7 +238,7 @@ const getCustomerByName = tryCatch(async (req, res) => {
     // //   })
 
 
-       io.sockets.emit('search_customer', notification);
+       io.emit('search_customer', notification);
 
         await customernew.save();
 
