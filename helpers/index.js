@@ -42,10 +42,10 @@ function init(httpServer) {
 
     //io.emit('status', notification);
 
-    socket.on('status-cust', (data) => {
+    socket.on('status-customer', (data) => {
         console.log("STATUSSSSSSSSSSSSS🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
         
-        io.emit('status', {...data ,message:" Customer Status changed"});
+        io.emit('status', {status:data ,message:" Customer Status changed"});
     });
 
 
