@@ -286,7 +286,7 @@ const createCustomer = tryCatch(async (req, res) => {
     //     },
     //   });
 
-    res.status(200).json(customer);
+    res.status(200).json({customer ,notification:notification});
 });
 
 const updateCustomer = tryCatch(async (req, res) => {

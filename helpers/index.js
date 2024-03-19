@@ -26,10 +26,20 @@ function init(httpServer) {
        socket.on('search', (data) => {
             console.log("SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
             io.emit('search_cust', data);
-            io.emit('search_server', {...data ,message:"search from server with data"});
+            io.emit('search_server', {...data ,message:"Search from server with data"});
         });
 
 
+
+        
+       socket.on('create_cust', (data) => {
+        console.log("SEARCH🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟" ,data)
+        
+        io.emit('create_cust-execute', {...data ,message:"New Customer created by agent"});
+    });
+
+
+    
 
 
 
