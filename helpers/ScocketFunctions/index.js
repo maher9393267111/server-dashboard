@@ -12,6 +12,8 @@ const initializeSocketIO = (server) => {
   io.on("connection", (socket) => {
     console.log("user connected (socket)");
 
+
+ io.emit('start', 'added new customer');
     socket.on("disconnect", () => {
       console.log("user Disconnected (d socket)");
     });
