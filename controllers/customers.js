@@ -3,9 +3,9 @@ const Notification = require('../models/notification');
 const { count } = require('../models/notification');
 const Employee = require('../models/employee');
 const tryCatch = require('./utils/tryCatch');
-const socketHandler = require('../helpers/socket');
-const { Search } = require('../helpers/socket');
-const { getIO } = require('../helpers/ScocketFunctions/index');
+const {getIO} = require('../helpers/index');
+//const { io } = require('../app');
+
 
 const getAllCustomers = tryCatch(async (req, res) => {
     console.log('AUTH JWT DATA--->', req.user);
@@ -221,10 +221,10 @@ const getCustomerByName = tryCatch(async (req, res) => {
 
         //const io = req.app.get('socketio');
 
-        const io = getIO(); //req.app.get('socket');
+        //const io =  //req.app.get('socket');
         io.emit('search_customer', notification);
 
-        // await Search("notifications")
+        
 
         await customernew.save();
 

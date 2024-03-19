@@ -12,7 +12,8 @@ const passport = require('passport');
 
 const { Server } = require('socket.io');
 const { socketOrder } = require('./helpers/socket');
-const { initializeSocketIO } = require('./helpers/ScocketFunctions/index');
+const { init } = require('./helpers'); 
+
 const Employee = require('./models/employee');
 const jwtSettings = require('./constants/jwtSettings');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -100,9 +101,10 @@ const server = app.listen(port, () => {
 
 
 
-initializeSocketIO(server);
+init(server);
 
-// const io = new Server(server, {
+
+//   const io = new Server(server, {
 //     cors: {
 //         origin: '*',
 //         Credentials: true,
@@ -120,12 +122,14 @@ initializeSocketIO(server);
 //     //let io = socket
 //     socket.emit('start', 'START');
 
-//     app.set('socket', socket);
-//     socketOrder(socket);
+//    // app.set('socket', socket);
+//     //socketOrder(socket);
 
 
  
 // });
+
+
 
 
 
@@ -170,4 +174,4 @@ initializeSocketIO(server);
 //     next();
 //   });
 
-module.exports = app;
+module.exports = app ;
