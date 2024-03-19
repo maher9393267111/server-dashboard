@@ -1,39 +1,14 @@
-
-
-
-
-
-
 function socketOrder(io) {
-
-
-  io.on('connection', (socket) => {
+    io.on('connection', (socket) => {
         socket.emit('order', 'order');
+
+        socket.on('signal', require('./ScocketFunctions/Search')(io, socket));
+
+
+
+
+        
     });
+}
 
-
-    // io.on('order', async (socket) => {
-    //   console.log('a user connected');
-
-
-    //   socket.on('disconnect', () => {
-    //       console.log('user disconnected');
-    //   })
-
-
-
-
-    //   io.emit('start', "MAHERRRRR");
-    
-
-
-     
-
-
-
-    // });
-
-
-  }
-  
-  module.exports ={socketOrder}
+module.exports = { socketOrder };

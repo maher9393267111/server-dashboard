@@ -112,12 +112,16 @@ const io = new Server(server, {
     },
 });
 
-app.set('socketio', io);
-socketOrder(io);
 
-// io.on('connection', (socket) => {
-//     socket.emit('start', 'START');
-// });
+
+//app.set('socketio', io);
+//socketOrder(io);
+
+io.on('connection', (socket) => {
+    //let io = socket
+    socket.emit('start', 'START');
+    app.set('socketio', io);
+});
 
 
 

@@ -232,7 +232,13 @@ const getCustomerByName = tryCatch(async (req, res) => {
         await notification.save();
 
         const io = req.app.get('socketio');
-        io.sockets.emit('search_customer', notification);
+
+    //   //  ظظio.on('connection', (socket) => {
+    //         socket.emit('search_customer', notification)
+    // //   })
+
+
+       io.sockets.emit('search_customer', notification);
 
         await customernew.save();
 
@@ -281,7 +287,7 @@ const createCustomer = tryCatch(async (req, res) => {
 
     await notification.save();
 
-    //const io = req.app.get('socketio');
+    const io = req.app.get('socketio');
        io.sockets.emit('fetch', 'added new customer');
     io.sockets.emit('createcustomer', notification);
 
