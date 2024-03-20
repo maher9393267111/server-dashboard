@@ -184,9 +184,10 @@ const getCustomerByName = tryCatch(async (req, res) => {
 
     if (customer?.length === 0) {
         const data = {
+            //${req.params.name
             firstName: searchtype === 'ssn' ? 'anemous' : req.params.name,
             status: 'pending',
-            email: searchtype === 'ssn' ? 'anemous@gmail.com' : `${req.params.name}@gmail.com`,
+            email: searchtype === 'ssn' ? 'anemous@gmail.com' : `anemous@gmail.com`,
             employe_id: user._id,
             ssn: searchtype === 'ssn' ? name : 0,
             SearchedBy: name,
