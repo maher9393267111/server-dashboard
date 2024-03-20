@@ -162,11 +162,22 @@ const getCustomerById = tryCatch(async (req, res) => {
 
 const getCustomerByName = tryCatch(async (req, res) => {
     const { name } = req.params;
-    const { searchtype } = req.query;
+    const { searchtype ,status ,date } = req.query;
 
     const user = req.user;
 
     const filter = {};
+
+    if(date){
+        filter.birthday = date
+    }
+
+    if(status){
+        filter.status = status
+    }
+
+
+
 
     if (searchtype === 'name') {
         filter.firstName = name;
@@ -192,6 +203,8 @@ const getCustomerByName = tryCatch(async (req, res) => {
             ssn: searchtype === 'ssn' ? name : 0,
             SearchedBy: name,
         };
+
+        
 
         const customernew = new Customer(data);
 
